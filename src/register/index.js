@@ -62,7 +62,7 @@ function Index() {
             Daftar
           </h5>
           <p className="pt-1 text-sm sm:text-base text-white">
-            Selamat Datang Kembali!
+            Selamat Datang Kembali !
           </p>
         </div>
 
