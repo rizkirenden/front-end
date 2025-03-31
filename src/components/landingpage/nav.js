@@ -5,7 +5,7 @@ function Nav({
   items,
   textColor = "text-white",
   gap = "gap-6",
-  mobileGap = "gap-4",
+  mobileGap = "gap-3", // Mengurangi gap di mobile
   className = "",
 }) {
   return (
@@ -14,7 +14,7 @@ function Nav({
         <a
           key={index}
           href={item.link}
-          className={`${textColor} hover:opacity-80 transition-opacity`}
+          className={`${textColor} text-xs md:text-sm hover:opacity-80 transition-opacity`} // text-xs untuk mobile, md:text-sm untuk desktop
         >
           {item.label}
         </a>

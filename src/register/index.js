@@ -3,12 +3,13 @@ import Card from "../components/login/card";
 import Btn from "../components/login/btn";
 import image from "../assets/Logo.png";
 import Input from "../components/login/input";
-import backgroundImage from "../assets/login.jpeg";
+import backgroundImage from "../assets/register.jpeg";
 import google from "../assets/google.png";
 
 function Index() {
   const [inputValue, setInputValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
+  const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -18,8 +19,16 @@ function Index() {
     setPasswordValue(e.target.value);
   };
 
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPasswordValue(e.target.value);
+  };
+
   const handleLogin = () => {
     console.log("Login attempt with:", inputValue, passwordValue);
+    if (passwordValue !== confirmPasswordValue) {
+      console.log("Passwords don't match!");
+      return;
+    }
     // Add your login logic here
   };
 
@@ -50,7 +59,7 @@ function Index() {
       >
         <div className="flex flex-col justify-center items-center mb-3">
           <h5 className="pt-4 md:pt-8 text-2xl sm:text-3xl text-white">
-            Masuk
+            Daftar
           </h5>
           <p className="pt-1 text-sm sm:text-base text-white">
             Selamat Datang Kembali!
@@ -76,24 +85,26 @@ function Index() {
             isPassword={true}
             value={passwordValue}
             onChange={handlePasswordChange}
+            className="text-sm sm:text-base text-white bg-[#181A1C] bg-opacity-60 mb-3"
+          />
+          <Input
+            label="Konfirmasi Password"
+            inputWidth="w-full"
+            placeholder="Konfirmasi Kata Sandi"
+            inputHeight="h-10 sm:h-12"
+            isPassword={true}
+            value={confirmPasswordValue}
+            onChange={handleConfirmPasswordChange}
             className="text-sm sm:text-base text-white bg-[#181A1C] bg-opacity-60"
           />
         </div>
-
-        <div className="w-full flex flex-row justify-between items-center mt-4 text-xs sm:text-sm mb-4 sm:mb-6 px-2 sm:px-4 gap-4 sm:gap-16">
+        <div className="w-full grid grid-cols-2 items-center mt-4 text-xs sm:text-sm mb-4 sm:mb-6 px-2 sm:px-4">
           <a href="/register" className="text-[#C1C2C4] whitespace-nowrap">
             Sudah punya akun?{" "}
             <span className="text-white hover:underline">Masuk</span>
           </a>
-
-          <a
-            href="/forgot-password"
-            className="text-[#C1C2C4] hover:underline whitespace-nowrap"
-          >
-            Lupa kata sandi?
-          </a>
+          <div></div> {/* Kolom kosong untuk mempertahankan layout */}
         </div>
-
         <div className="w-full px-2 sm:px-4">
           <Btn
             bgColor="#3D4142"

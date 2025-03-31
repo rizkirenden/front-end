@@ -19,7 +19,7 @@ function Btn({
         backgroundColor: bgColor,
         color: textColor,
         borderColor: borderColor,
-        borderWidth: borderColor ? "0px" : "0",
+        borderWidth: borderColor ? "1px" : "0",
       }}
     >
       {children}

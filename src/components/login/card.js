@@ -34,8 +34,6 @@ function Card({
           className="object-contain"
         />
       )}
-      <h5 className="pt-8 text-3xl text-white">Masuk</h5>
-      <p className="pt-1 text-white">Selamat Datang Kembali!</p>
       <div className="mt-4">{children}</div>
     </div>
   );
