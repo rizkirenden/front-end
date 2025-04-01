@@ -20,6 +20,7 @@ function HeroSection({
   onToggleMute,
   bgSize = "cover",
   bgPosition = "center",
+  bgExtended = false,
 }) {
   return (
     <section
@@ -38,47 +39,42 @@ function HeroSection({
         />
       )}
 
-      <div className="relative z-10 flex flex-col justify-center items-start px-4 sm:px-6 h-full mt-10">
-        {/* Content Section - Lebar diperpanjang ke kanan */}
+      {/* Tambahkan padding-top di div container utama */}
+      <div className="relative z-10 flex flex-col justify-center items-start px-4 sm:px-6 h-full pt-24 md:pt-36">
+        {/* Content Section */}
         <div className="text-left mb-8 w-full max-w-3xl">
-          {" "}
-          {/* Tambahkan w-full dan max-w-4xl */}
           <h1 className={`${titleSize} ${textColor} font-bold mb-4`}>
             {title}
           </h1>
           {subtitle && (
             <p className={`${subtitleSize} ${textColor} mb-8 w-full`}>
-              {" "}
-              {/* Tambahkan w-full */}
               {subtitle}
             </p>
           )}
         </div>
 
-        {/* Container for Buttons */}
-        <div className="w-full flex items-center justify-between mb-8">
+        {/* Container for Buttons - tambahkan margin-top jika perlu */}
+        <div className="w-full flex items-center justify-between mt-4">
           {/* Left-aligned buttons */}
           <div className="flex items-center gap-4">
             <Btn bgColor="bg-[#0F1E93]" rounded="rounded-full" href={ctaLink}>
               {ctaText}
             </Btn>
             <Btn
-              bgColor="bg-black bg-opacity-50"
+              bgColor="bg-[#181A1C]"
               rounded="rounded-full"
               href="#"
-              className="flex items-center" // Use flexbox for horizontal alignment
+              className="flex items-center"
             >
               <FaInfoCircle className="mr-2" /> Selengkapnya
-              {/* Add margin-left to space out the icon */}
             </Btn>
-
             <div className="text-white bg-black bg-opacity-10 border-white border-2 px-2 py-2 rounded-full">
               18+
             </div>
           </div>
 
           {/* Right-aligned mute button */}
-          <div className="ml-4">
+          <div className="ml-4 border-2 border-white rounded-full">
             <Suara isMuted={isMuted} onToggle={onToggleMute} />
           </div>
         </div>
@@ -116,6 +112,7 @@ HeroSection.propTypes = {
   overlay: PropTypes.bool,
   isMuted: PropTypes.bool,
   onToggleMute: PropTypes.func,
+  bgExtended: PropTypes.bool,
 };
 
 export default HeroSection;
