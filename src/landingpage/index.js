@@ -30,6 +30,7 @@ import newReleaseCards2 from "../assets/Number=17.png";
 import newReleaseCards3 from "../assets/Number=12.png";
 import newReleaseCards4 from "../assets/Number=9.png";
 import newReleaseCards5 from "../assets/Number=13.png";
+
 function Index() {
   const [isMuted, setIsMuted] = useState(false);
 
@@ -57,6 +58,8 @@ function Index() {
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
       rating: "4.8 / 5",
+      newEpisode: true, // Add this for new episode badge
+      top10: false,
     },
     {
       title: "Money Heist",
@@ -65,6 +68,8 @@ function Index() {
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
       rating: "4.7 / 5",
+      newEpisode: false,
+      top10: true, // Add this for top 10 badge
     },
     {
       title: "The Witcher",
@@ -73,6 +78,8 @@ function Index() {
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
       rating: "4.9 / 5",
+      newEpisode: true,
+      top10: true,
     },
     {
       title: "The Witcher",
@@ -81,6 +88,8 @@ function Index() {
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
       rating: "4.9 / 5",
+      newEpisode: false,
+      top10: false,
     },
     {
       title: "The Witcher",
@@ -89,8 +98,11 @@ function Index() {
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
       rating: "4.9 / 5",
+      newEpisode: true,
+      top10: false,
     },
   ];
+
   const topRatingCards = [
     {
       image: topRating1,
@@ -99,6 +111,8 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
+      newEpisode: false,
+      top10: true,
     },
     {
       image: topRating2,
@@ -107,6 +121,8 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
+      newEpisode: true,
+      top10: true,
     },
     {
       image: topRating3,
@@ -115,6 +131,8 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
+      newEpisode: false,
+      top10: false,
     },
     {
       image: topRating4,
@@ -123,6 +141,8 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
+      newEpisode: true,
+      top10: false,
     },
     {
       image: topRating5,
@@ -131,8 +151,11 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
+      newEpisode: false,
+      top10: true,
     },
   ];
+
   const topTrendingCard = [
     {
       image: topTranding1,
@@ -141,6 +164,8 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
+      newEpisode: true,
+      top10: true,
     },
     {
       image: topTranding2,
@@ -149,6 +174,8 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
+      newEpisode: false,
+      top10: true,
     },
     {
       image: topTranding3,
@@ -157,6 +184,8 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
+      newEpisode: true,
+      top10: false,
     },
     {
       image: topTranding4,
@@ -165,6 +194,8 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
+      newEpisode: false,
+      top10: false,
     },
     {
       image: topTranding5,
@@ -173,8 +204,11 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
+      newEpisode: true,
+      top10: true,
     },
   ];
+
   const newReleaseCards = [
     {
       image: newReleaseCards1,
@@ -183,6 +217,8 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
+      newEpisode: true,
+      top10: false,
     },
     {
       image: newReleaseCards2,
@@ -191,6 +227,8 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
+      newEpisode: true,
+      top10: false,
     },
     {
       image: newReleaseCards3,
@@ -199,6 +237,8 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
+      newEpisode: false,
+      top10: true,
     },
     {
       image: newReleaseCards4,
@@ -207,6 +247,8 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
+      newEpisode: true,
+      top10: true,
     },
     {
       image: newReleaseCards5,
@@ -215,8 +257,11 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
+      newEpisode: false,
+      top10: true,
     },
   ];
+
   const footerData = {
     logo,
     genres: [
@@ -242,6 +287,7 @@ function Index() {
       { title: "Syarat & Ketentuan", url: "#" },
     ],
   };
+
   return (
     <div className="flex flex-col min-h-screen bg-[#181A1C]">
       {/* Header Section */}
@@ -295,9 +341,10 @@ function Index() {
           Melanjutkan Nonton Film
         </h2>
         <div className="w-full overflow-hidden">
-          <CardSlider cards={cards} />
+          <CardSlider cards={cards} showBadges={true} />
         </div>
       </section>
+
       {/* Top Rating Section */}
       <section className="py-10 px-4 sm:px-8 md:px-16 lg:px-32 bg-[#181A1C]">
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-8">
@@ -308,9 +355,11 @@ function Index() {
             cards={topRatingCards}
             cardClassName="max-w-[280px]"
             showArrows={true}
+            showBadges={true}
           />
         </div>
       </section>
+
       <section className="py-10 px-4 sm:px-8 md:px-16 lg:px-32 bg-[#181A1C]">
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-8">
           Film Trending
@@ -320,9 +369,11 @@ function Index() {
             cards={topTrendingCard}
             cardClassName="max-w-[280px]"
             showArrows={true}
+            showBadges={true}
           />
         </div>
       </section>
+
       <section className="py-10 px-4 sm:px-8 md:px-16 lg:px-32 bg-[#181A1C]">
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-8">
           Rilis Baru
@@ -332,9 +383,11 @@ function Index() {
             cards={newReleaseCards}
             cardClassName="max-w-[280px]"
             showArrows={true}
+            showBadges={true}
           />
         </div>
       </section>
+
       <Footer
         logo={footerData.logo}
         genres={footerData.genres}
