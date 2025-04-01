@@ -9,6 +9,7 @@ import logoKecil from "../assets/logokecil.png";
 import defaultProfile from "../assets/profile.png";
 import { FaCog, FaArrowUp, FaSignOutAlt } from "react-icons/fa";
 import hero from "../assets/herosection.png";
+import Footer from "../components/landingpage/footer";
 import cardImage1 from "../assets/image 233.png";
 import cardImage2 from "../assets/image 223.png";
 import cardImage3 from "../assets/image 224.png";
@@ -216,6 +217,31 @@ function Index() {
       imageHeight: "400px",
     },
   ];
+  const footerData = {
+    logo,
+    genres: [
+      { name: "Aksi", link: "#" },
+      { name: "Anak-anak", link: "#" },
+      { name: "Anime", link: "#" },
+      { name: "Britania", link: "#" },
+      { name: "Drama", link: "#" },
+      { name: "Fantasi Ilmiah & Fantasi", link: "#" },
+      { name: "Kejahatan", link: "#" },
+      { name: "KDrama", link: "#" },
+      { name: "Komedi", link: "#" },
+      { name: "Petualangan", link: "#" },
+      { name: "Perang", link: "#" },
+      { name: "Romantis", link: "#" },
+      { name: "Sains & Alam", link: "#" },
+      { name: "Thriller", link: "#" },
+    ],
+    helpLinks: [
+      { title: "FAQ", url: "#" },
+      { title: "Kontak Kami", url: "#" },
+      { title: "Privasi", url: "#" },
+      { title: "Syarat & Ketentuan", url: "#" },
+    ],
+  };
   return (
     <div className="flex flex-col min-h-screen bg-[#181A1C]">
       {/* Header Section */}
@@ -309,6 +335,11 @@ function Index() {
           />
         </div>
       </section>
+      <Footer
+        logo={footerData.logo}
+        genres={footerData.genres}
+        helpLinks={footerData.helpLinks}
+      />
     </div>
   );
 }

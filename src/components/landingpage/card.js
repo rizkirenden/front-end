@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import { FaChevronLeft, FaChevronRight, FaStar } from "react-icons/fa";
 
 function Card({
-  title, // Jadikan title opsional
+  title,
   image,
   alt,
   rating,
