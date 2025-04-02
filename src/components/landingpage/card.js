@@ -12,7 +12,7 @@ import {
 function Card({
   title,
   image,
-  hoverImage, // Add this new prop
+  hoverImage,
   alt,
   rating,
   imageWidth = "100%",
@@ -26,46 +26,80 @@ function Card({
   ageRating = "13+",
   episodeCount = "16 Episode",
   genre = "Action • Adventure • Drama",
+  isContinueWatching = false,
+  progress = 0,
+  timeRemaining = "2h 13m",
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const cardRef = useRef(null);
+  const [naturalAspectRatio, setNaturalAspectRatio] = useState(16 / 9);
+
+  const handleImageLoad = (e) => {
+    const { naturalWidth, naturalHeight } = e.target;
+    setNaturalAspectRatio(naturalWidth / naturalHeight);
+  };
 
   return (
     <div
-      className={`flex flex-col items-start justify-between w-full p-0 ${bgColor} rounded-lg overflow-hidden shadow-md ${textColor} relative transition-all duration-300 ${
-        isHovered ? "transform scale-110 z-10" : ""
-      }`}
+      ref={cardRef}
+      className={`flex flex-col p-0 ${bgColor} rounded-lg overflow-hidden shadow-md ${textColor} relative transition-all duration-300`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
-        transition: "transform 0.3s ease, z-index 0.3s ease",
+        width: imageWidth,
+        transform: isHovered
+          ? isContinueWatching
+            ? "scale(1.10)"
+            : "scale(1.50)"
+          : "scale(1)",
+        transformOrigin: "center top",
+        zIndex: isHovered ? 50 : 1,
+        margin: isHovered ? (isContinueWatching ? "0 0 2%" : "0 0 10%") : "0",
       }}
     >
-      {/* Image Section with Hover Effect */}
-      <div className="relative w-full">
-        <div
-          className="relative"
-          style={{ width: imageWidth, height: imageHeight }}
-        >
-          {/* Main Image */}
+      {/* Image Container */}
+      <div
+        className="relative w-full overflow-hidden"
+        style={{
+          height:
+            isHovered && !isContinueWatching
+              ? `calc(${imageWidth} * ${naturalAspectRatio})`
+              : imageHeight,
+          transition: "height 0.3s ease",
+        }}
+      >
+        {/* Progress bar for Continue Watching */}
+        {isContinueWatching && (
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#2D2F31] z-10">
+            <div
+              className="h-full bg-[#0F8FF3]"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+        )}
+
+        {/* Original Image */}
+        <img
+          src={image}
+          alt={alt}
+          className={`absolute inset-0 object-cover w-full h-full transition-opacity duration-300 ${
+            isHovered && hoverImage && !isContinueWatching
+              ? "opacity-0"
+              : "opacity-100"
+          }`}
+          onLoad={handleImageLoad}
+        />
+
+        {/* Hover Image */}
+        {hoverImage && !isContinueWatching && (
           <img
-            src={image}
+            src={hoverImage}
             alt={alt}
             className={`absolute inset-0 object-cover w-full h-full transition-opacity duration-300 ${
-              isHovered && hoverImage ? "opacity-0" : "opacity-100"
+              isHovered ? "opacity-100" : "opacity-0"
             }`}
           />
-
-          {/* Hover Image (only shown when hovered and hoverImage provided) */}
-          {hoverImage && (
-            <img
-              src={hoverImage}
-              alt={alt}
-              className={`absolute inset-0 object-cover w-full h-full transition-opacity duration-300 ${
-                isHovered ? "opacity-100" : "opacity-0"
-              }`}
-            />
-          )}
-        </div>
+        )}
 
         {/* Badges */}
         {newEpisode && (
@@ -81,52 +115,67 @@ function Card({
             <div className="text-lg font-bold">10</div>
           </div>
         )}
+
+        {/* Title and Rating - Always visible */}
+        {title && (
+          <div className="absolute bottom-0 left-0 right-0 w-full p-3 bg-gradient-to-t from-black/80 to-transparent text-left">
+            <div className="flex justify-between items-end">
+              <h2 className={`font-bold text-sm ${titleSize}`}>{title}</h2>
+              <div className="flex items-center">
+                <FaStar className="text-white mr-1" />
+                <span className="font-bold text-sm">{rating}</span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Hover Content */}
+      {/* Hover Content - Only shown on hover */}
       {isHovered && (
-        <>
-          <div className="w-full bg-[#181A1C] p-3">
-            <div className="flex justify-between items-center mb-2">
-              <div className="flex items-center space-x-2">
-                <button className="bg-white text-black rounded-full p-2 hover:bg-opacity-90">
-                  <FaPlay size={12} />
-                </button>
-                <button className="bg-white text-black rounded-full p-2 hover:bg-opacity-90">
-                  <FaCheck size={12} />
-                </button>
-              </div>
+        <div className={`w-full bg-[#181A1C] border-t border-[#2D2F31] p-2`}>
+          {/* Action Buttons */}
+          <div className="flex justify-between items-center mb-2">
+            <div className="flex items-center gap-2">
               <button className="bg-white text-black rounded-full p-2 hover:bg-opacity-90">
-                <FaChevronDown size={12} />
+                <FaPlay size={12} />
+              </button>
+              <button className="bg-white text-black rounded-full p-2 hover:bg-opacity-90">
+                <FaCheck size={12} />
               </button>
             </div>
-            <div className="flex text-xs text-gray-300 space-x-2 items-center">
-              <span className="font-bold bg-[#CDF1FF4D] rounded-lg px-1 py-0.5">
-                {ageRating}
-              </span>
-              <span>{episodeCount}</span>
-            </div>
+            <button className="bg-white text-black rounded-full p-2 hover:bg-opacity-90">
+              <FaChevronDown size={12} />
+            </button>
           </div>
-          <div className="w-full px-3 pb-3 bg-[#181A1C]">
-            <div className="text-sm text-gray-400 truncate w-full font-bold">
-              {genre}
-            </div>
-          </div>
-        </>
-      )}
 
-      {/* Title and Rating */}
-      {title && (
-        <div className="w-full p-3 bg-gradient-to-t from-black to-transparent text-left">
-          <div className="flex justify-between items-end">
-            <h2 className={`font-bold text-sm ${titleSize}`}>{title}</h2>
-            <div className="flex items-center">
-              <FaStar className="text-white mr-1" />
-              <span className="font-bold text-sm">{rating}</span>
-            </div>
+          {/* Age Rating and Episode Count */}
+          <div className="flex text-xs text-gray-300 gap-2 items-center mb-1">
+            <span className="font-bold bg-[#CDF1FF4D] rounded px-1 py-0.5">
+              {ageRating}
+            </span>
+            <span>{episodeCount}</span>
           </div>
+
+          {/* Genre */}
+          <div className="text-sm text-[#C1C2C4] truncate w-full font-bold mb-1">
+            {genre}
+          </div>
+
+          {/* Progress Bar (for Continue Watching) */}
+          {isContinueWatching && (
+            <div className="flex items-center gap-2 text-xs text-gray-300 mt-1">
+              <div className="w-full bg-[#2D2F31] h-1 rounded-full">
+                <div
+                  className="h-full bg-[#0F8FF3] rounded-full"
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
+              <span>{timeRemaining}</span>
+            </div>
+          )}
         </div>
       )}
+
       {children}
     </div>
   );
@@ -137,31 +186,25 @@ function CardSlider({
   showArrows = true,
   showBadges = false,
   visibleCards = 5,
+  isContinueWatching = false,
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardWidth, setCardWidth] = useState(0);
   const sliderRef = useRef(null);
   const containerRef = useRef(null);
 
-  useEffect(() => {
-    const updateCardWidth = () => {
-      if (containerRef.current && sliderRef.current?.children[0]) {
-        const containerWidth = containerRef.current.offsetWidth;
-        const gap = 16;
-        const width =
-          (containerWidth - (visibleCards - 1) * gap) / visibleCards;
-        setCardWidth(width);
+  const updateCardWidth = () => {
+    if (containerRef.current && sliderRef.current?.children[0]) {
+      const containerWidth = containerRef.current.offsetWidth;
+      const gap = 16;
+      const width = (containerWidth - (visibleCards - 1) * gap) / visibleCards;
+      setCardWidth(width);
 
-        Array.from(sliderRef.current.children).forEach((child) => {
-          child.style.width = `${width}px`;
-        });
-      }
-    };
-
-    updateCardWidth();
-    window.addEventListener("resize", updateCardWidth);
-    return () => window.removeEventListener("resize", updateCardWidth);
-  }, [visibleCards, cards.length]);
+      Array.from(sliderRef.current.children).forEach((child) => {
+        child.style.width = `${width}px`;
+      });
+    }
+  };
 
   const nextCards = () => {
     const newIndex = Math.min(
@@ -169,29 +212,32 @@ function CardSlider({
       cards.length - visibleCards
     );
     setCurrentIndex(newIndex);
-    scrollToCard(newIndex);
+    sliderRef.current.scrollTo({
+      left: newIndex * (cardWidth + 16),
+      behavior: "smooth",
+    });
   };
 
   const prevCards = () => {
     const newIndex = Math.max(currentIndex - visibleCards, 0);
     setCurrentIndex(newIndex);
-    scrollToCard(newIndex);
+    sliderRef.current.scrollTo({
+      left: newIndex * (cardWidth + 16),
+      behavior: "smooth",
+    });
   };
 
-  const scrollToCard = (index) => {
-    if (sliderRef.current) {
-      sliderRef.current.scrollTo({
-        left: index * (cardWidth + 16),
-        behavior: "smooth",
-      });
-    }
-  };
+  useEffect(() => {
+    updateCardWidth();
+    window.addEventListener("resize", updateCardWidth);
+    return () => window.removeEventListener("resize", updateCardWidth);
+  }, [visibleCards, cards.length]);
 
   return (
     <div className="relative w-full" ref={containerRef}>
       <div
         ref={sliderRef}
-        className="flex gap-4 overflow-x-hidden w-full py-4"
+        className="flex gap-4 overflow-x-hidden w-full py-4 scroll-smooth"
         style={{ scrollBehavior: "smooth" }}
       >
         {cards.map((card, index) => (
@@ -202,6 +248,7 @@ function CardSlider({
               top10={showBadges ? card.top10 : false}
               ageRating={card.ageRating || "13+"}
               episodeCount={card.episodeCount || "16 Episode"}
+              isContinueWatching={isContinueWatching}
             />
           </div>
         ))}
@@ -212,36 +259,20 @@ function CardSlider({
           <button
             onClick={prevCards}
             disabled={currentIndex === 0}
-            className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 bg-[#181A1C] bg-opacity-80 text-white p-3 rounded-full z-20 hover:bg-opacity-100 transition ${
+            className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 bg-[#181A1C] bg-opacity-80 text-white p-3 rounded-full z-50 hover:bg-opacity-100 transition ${
               currentIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
             }`}
-            style={{
-              boxShadow: "0 0 8px rgba(0,0,0,0.5)",
-              width: "40px",
-              height: "40px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
           >
             <FaChevronLeft size={20} />
           </button>
           <button
             onClick={nextCards}
             disabled={currentIndex >= cards.length - visibleCards}
-            className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 bg-[#181A1C] text-white p-3 rounded-full z-20 hover:bg-opacity-100 transition ${
+            className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 bg-[#181A1C] text-white p-3 rounded-full z-50 hover:bg-opacity-100 transition ${
               currentIndex >= cards.length - visibleCards
                 ? "opacity-50 cursor-not-allowed"
                 : ""
             }`}
-            style={{
-              boxShadow: "0 0 8px rgba(0,0,0,0.5)",
-              width: "40px",
-              height: "40px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
           >
             <FaChevronRight size={20} />
           </button>
@@ -251,7 +282,6 @@ function CardSlider({
   );
 }
 
-// Prop Types untuk Card
 Card.propTypes = {
   title: PropTypes.string,
   image: PropTypes.string.isRequired,
@@ -268,9 +298,11 @@ Card.propTypes = {
   top10: PropTypes.bool,
   ageRating: PropTypes.string,
   episodeCount: PropTypes.string,
+  isContinueWatching: PropTypes.bool,
+  progress: PropTypes.number,
+  timeRemaining: PropTypes.string,
 };
 
-// Prop Types untuk CardSlider
 CardSlider.propTypes = {
   cards: PropTypes.arrayOf(
     PropTypes.shape({
@@ -286,12 +318,15 @@ CardSlider.propTypes = {
       top10: PropTypes.bool,
       ageRating: PropTypes.string,
       episodeCount: PropTypes.string,
+      progress: PropTypes.number,
+      timeRemaining: PropTypes.string,
     })
   ).isRequired,
   cardClassName: PropTypes.string,
   showArrows: PropTypes.bool,
   showBadges: PropTypes.bool,
   visibleCards: PropTypes.number,
+  isContinueWatching: PropTypes.bool,
 };
 
 export { Card, CardSlider };

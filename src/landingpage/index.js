@@ -73,7 +73,7 @@ function Index() {
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
       rating: "4.8 / 5",
-      newEpisode: true, // Add this for new episode badge
+      newEpisode: true,
       top10: false,
     },
     {
@@ -84,7 +84,7 @@ function Index() {
       textColor: "text-white",
       rating: "4.7 / 5",
       newEpisode: false,
-      top10: true, // Add this for top 10 badge
+      top10: true,
     },
     {
       title: "The Witcher",
@@ -371,7 +371,13 @@ function Index() {
           Melanjutkan Nonton Film
         </h2>
         <div className="w-full overflow-hidden">
-          <CardSlider cards={cards} showBadges={true} />
+          <CardSlider
+            cards={cards}
+            showBadges={true}
+            isContinueWatching={true}
+            progress={65}
+            timeRemaining="1h 22m"
+          />
         </div>
       </section>
 
