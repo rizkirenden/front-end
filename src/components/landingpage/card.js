@@ -41,17 +41,6 @@ function Card({
     setNaturalAspectRatio(naturalWidth / naturalHeight);
   };
 
-  const getContentInfo = () => {
-    if (isContinueWatching) {
-      if (isSeries) {
-        return episodeCount || "S1 E1";
-      } else {
-        return duration || "2h 23m";
-      }
-    }
-    return null;
-  };
-
   return (
     <div
       ref={cardRef}
@@ -62,7 +51,7 @@ function Card({
         width: imageWidth,
         transform: isHovered
           ? isContinueWatching
-            ? "scale(1.10)"
+            ? "scale(1.10)" // Scale slightly on hover for continue watching
             : "scale(1.50)"
           : "scale(1)",
         transformOrigin: "center top",
@@ -76,19 +65,12 @@ function Card({
           height:
             isHovered && !isContinueWatching
               ? `calc(${imageWidth} * ${naturalAspectRatio})`
+              : isContinueWatching
+              ? "200px" // Increase height for continue watching card
               : imageHeight,
           transition: "height 0.3s ease",
         }}
       >
-        {isContinueWatching && (
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#2D2F31] z-10">
-            <div
-              className="h-full bg-[#0F8FF3]"
-              style={{ width: `${progress}%` }}
-            ></div>
-          </div>
-        )}
-
         <img
           src={image}
           alt={alt}
@@ -155,14 +137,14 @@ function Card({
             </button>
           </div>
 
-          {isContinueWatching && getContentInfo() && (
-            <div className="flex text-xs text-gray-300 gap-2 items-center mb-1">
-              <span className="font-bold bg-[#CDF1FF4D] rounded px-1 py-0.5">
-                {ageRating}
-              </span>
-              <span>{getContentInfo()}</span>
-            </div>
-          )}
+          {/* Added age rating and duration info */}
+          <div className="flex text-xs text-gray-300 gap-2 items-center mb-1">
+            <span className="font-bold bg-[#CDF1FF4D] rounded px-1 py-0.5">
+              {ageRating}
+            </span>
+            {duration && <span>{duration}</span>}
+            {episodeCount && <span>{episodeCount}</span>}
+          </div>
 
           {isContinueWatching && (
             <div className="flex items-center gap-2 text-xs text-gray-300 mb-1">
@@ -176,15 +158,9 @@ function Card({
             </div>
           )}
 
-          {isContinueWatching ? (
-            <div className="text-xs text-[#C1C2C4] truncate w-full pt-1 font-bold">
-              {genre}
-            </div>
-          ) : (
-            <div className="text-sm text-[#C1C2C4] truncate w-full font-bold mb-1">
-              {genre}
-            </div>
-          )}
+          <div className="text-xs text-[#C1C2C4] truncate font-bold flex justify-center items-center w-full text-center">
+            {genre}
+          </div>
         </div>
       )}
 
@@ -200,17 +176,24 @@ function CardSlider({
   showBadges = false,
   visibleCards = 5,
   isContinueWatching = false,
+  initialVisibleCards = null, // Add new prop for initial visible cards
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardWidth, setCardWidth] = useState(0);
   const sliderRef = useRef(null);
   const containerRef = useRef(null);
 
+  // Use initialVisibleCards if provided, otherwise use visibleCards
+  const effectiveVisibleCards =
+    initialVisibleCards !== null ? initialVisibleCards : visibleCards;
+
   const updateCardWidth = () => {
     if (containerRef.current && sliderRef.current?.children[0]) {
       const containerWidth = containerRef.current.offsetWidth;
       const gap = 16;
-      const width = (containerWidth - (visibleCards - 1) * gap) / visibleCards;
+      const width =
+        (containerWidth - (effectiveVisibleCards - 1) * gap) /
+        effectiveVisibleCards;
       setCardWidth(width);
 
       Array.from(sliderRef.current.children).forEach((child) => {
@@ -221,8 +204,8 @@ function CardSlider({
 
   const nextCards = () => {
     const newIndex = Math.min(
-      currentIndex + visibleCards,
-      cards.length - visibleCards
+      currentIndex + effectiveVisibleCards,
+      cards.length - effectiveVisibleCards
     );
     setCurrentIndex(newIndex);
     sliderRef.current.scrollTo({
@@ -232,7 +215,7 @@ function CardSlider({
   };
 
   const prevCards = () => {
-    const newIndex = Math.max(currentIndex - visibleCards, 0);
+    const newIndex = Math.max(currentIndex - effectiveVisibleCards, 0);
     setCurrentIndex(newIndex);
     sliderRef.current.scrollTo({
       left: newIndex * (cardWidth + 16),
@@ -244,15 +227,27 @@ function CardSlider({
     updateCardWidth();
     window.addEventListener("resize", updateCardWidth);
     return () => window.removeEventListener("resize", updateCardWidth);
-  }, [visibleCards, cards.length]);
+  }, [effectiveVisibleCards, cards.length]);
 
   return (
     <div className="relative w-full" ref={containerRef}>
       <div
         ref={sliderRef}
         className="flex gap-4 overflow-x-hidden w-full py-4 scroll-smooth"
-        style={{ scrollBehavior: "smooth" }}
+        style={{
+          scrollBehavior: "smooth",
+          // Hide scrollbar for Chrome/Safari
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
       >
+        {/* Hide scrollbar for Firefox */}
+        <style jsx>{`
+          div::-webkit-scrollbar {
+            display: none;
+          }
+        `}</style>
+
         {cards.map((card, index) => (
           <div key={index} className={`flex-shrink-0 ${cardClassName}`}>
             <Card
@@ -260,8 +255,8 @@ function CardSlider({
               newEpisode={showBadges ? card.newEpisode : false}
               top10={showBadges ? card.top10 : false}
               ageRating={card.ageRating || "13+"}
-              episodeCount={card.isContinueWatching ? card.episodeCount : null}
-              duration={card.isContinueWatching ? card.duration : null}
+              episodeCount={card.episodeCount}
+              duration={card.duration}
               isContinueWatching={isContinueWatching || card.isContinueWatching}
               progress={card.progress}
               timeRemaining={card.timeRemaining}
@@ -284,9 +279,9 @@ function CardSlider({
           </button>
           <button
             onClick={nextCards}
-            disabled={currentIndex >= cards.length - visibleCards}
+            disabled={currentIndex >= cards.length - effectiveVisibleCards}
             className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 bg-[#181A1C] text-white p-3 rounded-full z-50 hover:bg-opacity-100 transition ${
-              currentIndex >= cards.length - visibleCards
+              currentIndex >= cards.length - effectiveVisibleCards
                 ? "opacity-50 cursor-not-allowed"
                 : ""
             }`}
@@ -342,6 +337,7 @@ CardSlider.propTypes = {
       progress: PropTypes.number,
       timeRemaining: PropTypes.string,
       isSeries: PropTypes.bool,
+      initialVisibleCards: PropTypes.number,
     })
   ).isRequired,
   cardClassName: PropTypes.string,

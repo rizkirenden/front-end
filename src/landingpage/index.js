@@ -67,66 +67,91 @@ function Index() {
   // Card data
   const cards = [
     {
-      title: "Stranger Things",
+      title: "Dont Look Up",
       image: cardImage1,
       hoverImage: cardImageHover1,
       alt: "Stranger Things",
       rating: "4.8 / 5",
-      newEpisode: true,
+      newEpisode: false,
       top10: false,
       ageRating: "13+",
-      episodeCount: "S2 E5", // For series in Continue Watching
+      episodeCount: "S2 E5",
       genre: "Sci-Fi • Horror • Drama",
       isContinueWatching: true,
       progress: 65,
       timeRemaining: "1h 22m",
       isSeries: true,
+      bgColor: "bg-[#181A1C]",
+      textColor: "text-white",
     },
     {
-      title: "Avengers: Endgame",
+      title: "All Of Us Dead",
       image: cardImage2,
       hoverImage: cardImageHover2,
       alt: "Avengers: Endgame",
       rating: "4.9 / 5",
       newEpisode: false,
-      top10: true,
+      top10: false,
       ageRating: "13+",
-      duration: "3h 1m", // For movies
+      duration: "3h 1m", // Duration for a movie
       genre: "Action • Adventure • Sci-Fi",
       isContinueWatching: true,
       progress: 45,
       timeRemaining: "1h 40m",
       isSeries: false,
+      bgColor: "bg-[#181A1C]",
+      textColor: "text-white",
     },
     {
-      title: "The Witcher",
+      title: "A Man Called Otto",
       image: cardImage3,
       alt: "The Witcher",
-      bgColor: "bg-[#181A1C]",
-      textColor: "text-white",
-      rating: "4.9 / 5",
-      newEpisode: true,
-      top10: true,
-    },
-    {
-      title: "The Witcher",
-      image: cardImage4,
-      alt: "The Witcher",
-      bgColor: "bg-[#181A1C]",
-      textColor: "text-white",
       rating: "4.9 / 5",
       newEpisode: false,
       top10: false,
-    },
-    {
-      title: "The Witcher",
-      image: cardImage5,
-      alt: "The Witcher",
+      ageRating: "PG-13", // Added age rating
+      episodeCount: null, // Not applicable for a movie
+      genre: "Comedy • Drama", // Added genre for consistency
+      isContinueWatching: false, // Assuming it's not for continue watching
+      progress: null, // No progress for a movie
+      timeRemaining: "N/A", // Time remaining not applicable
+      isSeries: false,
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
+    },
+    {
+      title: "Blue Lock",
+      image: cardImage4,
+      alt: "The Witcher",
       rating: "4.9 / 5",
       newEpisode: true,
       top10: false,
+      ageRating: "13+", // Added age rating for consistency
+      episodeCount: "S1 E6", // Added episode count (assuming it's a series)
+      genre: "Sports • Action • Drama", // Added genre for consistency
+      isContinueWatching: true,
+      progress: 50, // Added progress as a placeholder
+      timeRemaining: "22m", // Added estimated remaining time
+      isSeries: true,
+      bgColor: "bg-[#181A1C]",
+      textColor: "text-white",
+    },
+    {
+      title: "Rio",
+      image: cardImage5,
+      alt: "The Witcher",
+      rating: "4.9 / 5",
+      newEpisode: false,
+      top10: false,
+      ageRating: "PG", // Added age rating for consistency
+      episodeCount: null, // Not applicable for a movie
+      genre: "Animation • Comedy • Adventure", // Added genre for consistency
+      isContinueWatching: false, // Assuming it's not for continue watching
+      progress: null, // No progress for a movie
+      timeRemaining: "N/A", // Time remaining not applicable
+      isSeries: false,
+      bgColor: "bg-[#181A1C]",
+      textColor: "text-white",
     },
   ];
 
@@ -139,8 +164,11 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
-      newEpisode: false,
-      top10: true,
+      newEpisode: true,
+      top10: false,
+      ageRating: "18+",
+      episodeCount: "S1 E5", // For series
+      genre: "Drama • Horror • Post-Apocalyptic",
     },
     {
       image: topRating2,
@@ -150,8 +178,11 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
-      newEpisode: true,
-      top10: true,
+      newEpisode: false,
+      top10: false,
+      ageRating: "17+",
+      duration: "1h 52m",
+      genre: "Drama • Horror • Post-Apocalyptic",
     },
     {
       image: topRating3,
@@ -163,6 +194,9 @@ function Index() {
       imageHeight: "400px",
       newEpisode: false,
       top10: false,
+      ageRating: "17+",
+      duration: "58m",
+      genre: "Fantasy • Drama • Medieval",
     },
     {
       image: topRating4,
@@ -172,8 +206,11 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
-      newEpisode: true,
+      newEpisode: false,
       top10: false,
+      ageRating: "17+",
+      episodeCount: "S2 E7", // For series
+      genre: "Fantasy • Drama • Medieval",
     },
     {
       image: topRating5,
@@ -184,7 +221,10 @@ function Index() {
       imageWidth: "250px",
       imageHeight: "400px",
       newEpisode: false,
-      top10: true,
+      top10: false,
+      ageRating: "17+",
+      duration: "3h 58m",
+      genre: "Fantasy • Drama • Medieval",
     },
   ];
 
@@ -197,8 +237,11 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
-      newEpisode: true,
+      newEpisode: false,
       top10: true,
+      ageRating: "16+",
+      duration: "3h 52m",
+      genre: "Sci-Fi • Horror • 80s Nostalgia",
     },
     {
       image: topTranding2,
@@ -210,6 +253,9 @@ function Index() {
       imageHeight: "400px",
       newEpisode: false,
       top10: true,
+      ageRating: "17+",
+      duration: "58m",
+      genre: "Fantasy • Drama • Medieval",
     },
     {
       image: topTranding3,
@@ -219,8 +265,11 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
-      newEpisode: true,
-      top10: false,
+      newEpisode: false,
+      top10: true,
+      ageRating: "16+",
+      duration: "2h 52m",
+      genre: "Sci-Fi • Horror • 80s Nostalgia",
     },
     {
       image: topTranding4,
@@ -231,7 +280,10 @@ function Index() {
       imageWidth: "250px",
       imageHeight: "400px",
       newEpisode: false,
-      top10: false,
+      top10: true,
+      ageRating: "16+",
+      duration: "2h 12m",
+      genre: "Sci-Fi • Horror • 80s Nostalgia",
     },
     {
       image: topTranding5,
@@ -241,8 +293,11 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
-      newEpisode: true,
+      newEpisode: false,
       top10: true,
+      ageRating: "16+",
+      duration: "2h 10m",
+      genre: "Sci-Fi • Horror • 80s Nostalgia",
     },
   ];
 
@@ -255,8 +310,11 @@ function Index() {
       textColor: "text-white",
       imageWidth: "250px",
       imageHeight: "400px",
-      newEpisode: true,
-      top10: false,
+      newEpisode: false,
+      top10: true,
+      ageRating: "16+",
+      duration: "1h 32m",
+      genre: "Sci-Fi • Horror • 80s Nostalgia",
     },
     {
       image: newReleaseCards2,
@@ -268,6 +326,9 @@ function Index() {
       imageHeight: "400px",
       newEpisode: true,
       top10: false,
+      ageRating: "16+",
+      duration: "1h 40m",
+      genre: "Sci-Fi • Horror • 80s Nostalgia",
     },
     {
       image: newReleaseCards3,
@@ -279,6 +340,9 @@ function Index() {
       imageHeight: "400px",
       newEpisode: false,
       top10: true,
+      ageRating: "16+",
+      duration: "1h 20m",
+      genre: "Sci-Fi • Horror • 80s Nostalgia",
     },
     {
       image: newReleaseCards4,
@@ -289,7 +353,10 @@ function Index() {
       imageWidth: "250px",
       imageHeight: "400px",
       newEpisode: true,
-      top10: true,
+      top10: false,
+      ageRating: "16+",
+      duration: "1h 10m",
+      genre: "Sci-Fi • Horror • 80s Nostalgia",
     },
     {
       image: newReleaseCards5,
@@ -300,7 +367,10 @@ function Index() {
       imageWidth: "250px",
       imageHeight: "400px",
       newEpisode: false,
-      top10: true,
+      top10: false,
+      ageRating: "16+",
+      duration: "1h 50m",
+      genre: "Sci-Fi • Horror • 80s Nostalgia",
     },
   ];
 
@@ -387,8 +457,8 @@ function Index() {
             cards={cards}
             showBadges={true}
             isContinueWatching={true}
-            progress={65}
-            timeRemaining="1h 22m"
+            initialVisibleCards={4} // Show only 4 cards initially
+            visibleCards={5} // Normal scroll will show 5 cards
           />
         </div>
       </section>
