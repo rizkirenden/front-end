@@ -49,13 +49,12 @@ function Card({
         </div>
       )}
 
-      {/* Hanya tampilkan title dan rating jika title ada */}
       {title && (
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent text-left">
           <div className="flex justify-between items-end">
             <h2 className={`font-bold text-sm ${titleSize}`}>{title}</h2>
             <div className="flex items-center">
-              <FaStar className="text-yellow-400 mr-1" />
+              <FaStar className="text-white mr-1" />
               <span className="font-bold">{rating}</span>
             </div>
           </div>
@@ -126,7 +125,7 @@ function CardSlider({
     <div className="relative w-full" ref={containerRef}>
       <div
         ref={sliderRef}
-        className="flex gap-4 overflow-x-hidden w-full py-4" // Removed scrollbar-hide and changed to overflow-x-hidden
+        className="flex gap-4 overflow-x-hidden w-full py-4"
         style={{ scrollBehavior: "smooth" }}
       >
         {cards.map((card, index) => (
