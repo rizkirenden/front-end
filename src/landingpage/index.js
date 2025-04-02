@@ -402,25 +402,23 @@ function Index() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#181A1C]">
-      {/* Header Section */}
       <Header
         logo={logo}
         logoMobile={logoKecil}
         altText="Logo"
-        bgColor="#181A1C"
+        bgColor="bg-[#181A1C]"
         mobileHeight="70px"
         desktopHeight="94px"
         profileComponent={<Profile {...profileData} />}
+        className="px-4 fixed top-0 left-0 right-0 z-50" // Tambahkan padding dan fixed positioning
       >
-        <div className="flex items-center overflow-x-auto whitespace-nowrap mr-4 md:mr-8">
-          <Nav
-            items={navItems}
-            textColor="text-white"
-            gap="gap-4 md:gap-8"
-            mobileGap="gap-2"
-            className="flex items-center pl-4 md:pl-10"
-          />
-        </div>
+        <Nav
+          items={navItems}
+          textColor="text-white"
+          gap="gap-6 md:gap-8"
+          mobileGap="gap-4"
+          className="flex items-center"
+        />
       </Header>
 
       {/* Hero Section */}
