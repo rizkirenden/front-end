@@ -51,12 +51,20 @@ function Card({
         width: imageWidth,
         transform: isHovered
           ? isContinueWatching
-            ? "scale(1.10)" // Scale slightly on hover for continue watching
+            ? "scale(1.05)"
+            : window.innerWidth < 768
+            ? "scale(1.10)"
             : "scale(1.50)"
           : "scale(1)",
         transformOrigin: "center top",
         zIndex: isHovered ? 50 : 1,
-        margin: isHovered ? (isContinueWatching ? "0 0 2%" : "0 0 10%") : "0",
+        margin: isHovered
+          ? isContinueWatching
+            ? "0 0 2%"
+            : window.innerWidth < 768
+            ? "0 0 5%"
+            : "0 0 10%"
+          : "0",
       }}
     >
       <div
@@ -66,11 +74,12 @@ function Card({
             isHovered && !isContinueWatching
               ? `calc(${imageWidth} * ${naturalAspectRatio})`
               : isContinueWatching
-              ? "200px" // Increase height for continue watching card
+              ? "200px"
               : imageHeight,
           transition: "height 0.3s ease",
         }}
       >
+        {/* Gambar utama */}
         <img
           src={image}
           alt={alt}
@@ -82,6 +91,7 @@ function Card({
           onLoad={handleImageLoad}
         />
 
+        {/* Gambar hover */}
         {hoverImage && !isContinueWatching && (
           <img
             src={hoverImage}
@@ -92,6 +102,7 @@ function Card({
           />
         )}
 
+        {/* Badges */}
         {newEpisode && (
           <div className="absolute top-2 left-2 bg-[#0F1E93] text-white text-xs font-bold px-2 py-1 rounded-lg">
             Episode Baru
@@ -106,14 +117,17 @@ function Card({
           </div>
         )}
 
+        {/* Judul dan rating */}
         {title && (
-          <div className="absolute bottom-0 left-0 right-0 w-full p-3 bg-gradient-to-t from-black/80 to-transparent text-left">
+          <div className="absolute bottom-0 left-0 right-0 w-full p-2 sm:p-3 bg-gradient-to-t from-black/80 to-transparent text-left">
             <div className="flex justify-between items-end">
-              <h2 className={`font-bold text-sm ${titleSize}`}>{title}</h2>
+              <h2 className={`font-bold text-xs sm:text-sm ${titleSize}`}>
+                {title}
+              </h2>
               {!isContinueWatching && (
                 <div className="flex items-center">
-                  <FaStar className="text-white mr-1" />
-                  <span className="font-bold text-sm">{rating}</span>
+                  <FaStar className="text-white mr-1 text-xs sm:text-sm" />
+                  <span className="font-bold text-xs sm:text-sm">{rating}</span>
                 </div>
               )}
             </div>
@@ -121,24 +135,25 @@ function Card({
         )}
       </div>
 
+      {/* Bagian hover */}
       {isHovered && (
         <div className={`w-full bg-[#181A1C] border-t border-[#2D2F31] p-2`}>
           <div className="flex justify-between items-center mb-2">
-            <div className="flex items-center gap-2">
-              <button className="bg-white text-black rounded-full p-2 hover:bg-opacity-90">
-                <FaPlay size={12} />
+            <div className="flex items-center gap-1 sm:gap-2">
+              <button className="bg-white text-black rounded-full p-1 sm:p-2 hover:bg-opacity-90">
+                <FaPlay className="text-xs sm:text-sm" />
               </button>
-              <button className="bg-white text-black rounded-full p-2 hover:bg-opacity-90">
-                <FaCheck size={12} />
+              <button className="bg-white text-black rounded-full p-1 sm:p-2 hover:bg-opacity-90">
+                <FaCheck className="text-xs sm:text-sm" />
               </button>
             </div>
-            <button className="bg-white text-black rounded-full p-2 hover:bg-opacity-90">
-              <FaChevronDown size={12} />
+            <button className="bg-white text-black rounded-full p-1 sm:p-2 hover:bg-opacity-90">
+              <FaChevronDown className="text-xs sm:text-sm" />
             </button>
           </div>
 
-          {/* Added age rating and duration info */}
-          <div className="flex text-xs text-gray-300 gap-2 items-center mb-1">
+          {/* Info rating dan durasi */}
+          <div className="flex text-[10px] sm:text-xs text-gray-300 gap-1 sm:gap-2 items-center mb-1">
             <span className="font-bold bg-[#CDF1FF4D] rounded px-1 py-0.5">
               {ageRating}
             </span>
@@ -146,8 +161,9 @@ function Card({
             {episodeCount && <span>{episodeCount}</span>}
           </div>
 
+          {/* Progress bar untuk continue watching */}
           {isContinueWatching && (
-            <div className="flex items-center gap-2 text-xs text-gray-300 mb-1">
+            <div className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-gray-300 mb-1">
               <div className="w-full bg-[#2D2F31] h-1 rounded-full">
                 <div
                   className="h-full bg-[#0F8FF3] rounded-full"
@@ -158,7 +174,8 @@ function Card({
             </div>
           )}
 
-          <div className="text-xs text-[#C1C2C4] truncate font-bold flex justify-center items-center w-full text-center">
+          {/* Genre */}
+          <div className="text-[10px] sm:text-xs text-[#C1C2C4] truncate font-bold flex justify-center items-center w-full text-center">
             {genre}
           </div>
         </div>
@@ -176,32 +193,58 @@ function CardSlider({
   showBadges = false,
   visibleCards = 5,
   isContinueWatching = false,
-  initialVisibleCards = null, // Add new prop for initial visible cards
+  initialVisibleCards = null,
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardWidth, setCardWidth] = useState(0);
   const sliderRef = useRef(null);
   const containerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Use initialVisibleCards if provided, otherwise use visibleCards
+  // Determine mobile/desktop and set visible cards accordingly
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    handleResize(); // Initialize on mount
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Calculate effective visible cards based on device and props
   const effectiveVisibleCards =
-    initialVisibleCards !== null ? initialVisibleCards : visibleCards;
+    isContinueWatching && isMobile
+      ? 1
+      : isMobile
+      ? 3 // Tampilkan 3 card di mobile
+      : initialVisibleCards !== null
+      ? initialVisibleCards
+      : visibleCards;
 
+  // Update card width based on container size and visible cards
   const updateCardWidth = () => {
     if (containerRef.current && sliderRef.current?.children[0]) {
       const containerWidth = containerRef.current.offsetWidth;
-      const gap = 16;
-      const width =
+      const gap = 16; // Gap between cards
+
+      // Calculate card width based on visible cards
+      const width = Math.min(
         (containerWidth - (effectiveVisibleCards - 1) * gap) /
-        effectiveVisibleCards;
+          effectiveVisibleCards,
+        320 // Maximum card width
+      );
+
       setCardWidth(width);
 
+      // Apply width to all cards
       Array.from(sliderRef.current.children).forEach((child) => {
         child.style.width = `${width}px`;
       });
     }
   };
 
+  // Navigate to next set of cards
   const nextCards = () => {
     const newIndex = Math.min(
       currentIndex + effectiveVisibleCards,
@@ -214,6 +257,7 @@ function CardSlider({
     });
   };
 
+  // Navigate to previous set of cards
   const prevCards = () => {
     const newIndex = Math.max(currentIndex - effectiveVisibleCards, 0);
     setCurrentIndex(newIndex);
@@ -223,11 +267,12 @@ function CardSlider({
     });
   };
 
+  // Update card width on mount, resize, or when visible cards change
   useEffect(() => {
     updateCardWidth();
     window.addEventListener("resize", updateCardWidth);
     return () => window.removeEventListener("resize", updateCardWidth);
-  }, [effectiveVisibleCards, cards.length]);
+  }, [effectiveVisibleCards, cards.length, isMobile]);
 
   return (
     <div className="relative w-full" ref={containerRef}>
@@ -236,12 +281,11 @@ function CardSlider({
         className="flex gap-4 overflow-x-hidden w-full py-4 scroll-smooth"
         style={{
           scrollBehavior: "smooth",
-          // Hide scrollbar for Chrome/Safari
           scrollbarWidth: "none",
           msOverflowStyle: "none",
         }}
       >
-        {/* Hide scrollbar for Firefox */}
+        {/* Hide scrollbar */}
         <style jsx>{`
           div::-webkit-scrollbar {
             display: none;
@@ -252,15 +296,10 @@ function CardSlider({
           <div key={index} className={`flex-shrink-0 ${cardClassName}`}>
             <Card
               {...card}
+              imageWidth={`${cardWidth}px`}
               newEpisode={showBadges ? card.newEpisode : false}
               top10={showBadges ? card.top10 : false}
-              ageRating={card.ageRating || "13+"}
-              episodeCount={card.episodeCount}
-              duration={card.duration}
               isContinueWatching={isContinueWatching || card.isContinueWatching}
-              progress={card.progress}
-              timeRemaining={card.timeRemaining}
-              isSeries={card.isSeries}
             />
           </div>
         ))}
@@ -271,22 +310,22 @@ function CardSlider({
           <button
             onClick={prevCards}
             disabled={currentIndex === 0}
-            className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 bg-[#181A1C] bg-opacity-80 text-white p-3 rounded-full z-50 hover:bg-opacity-100 transition ${
+            className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 bg-[#181A1C] bg-opacity-80 text-white p-2 md:p-3 rounded-full z-50 hover:bg-opacity-100 transition ${
               currentIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
-            <FaChevronLeft size={20} />
+            <FaChevronLeft className="text-sm md:text-base" />
           </button>
           <button
             onClick={nextCards}
             disabled={currentIndex >= cards.length - effectiveVisibleCards}
-            className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 bg-[#181A1C] text-white p-3 rounded-full z-50 hover:bg-opacity-100 transition ${
+            className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 bg-[#181A1C] bg-opacity-80 text-white p-2 md:p-3 rounded-full z-50 hover:bg-opacity-100 transition ${
               currentIndex >= cards.length - effectiveVisibleCards
                 ? "opacity-50 cursor-not-allowed"
                 : ""
             }`}
           >
-            <FaChevronRight size={20} />
+            <FaChevronRight className="text-sm md:text-base" />
           </button>
         </>
       )}
