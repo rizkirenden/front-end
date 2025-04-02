@@ -24,11 +24,13 @@ function Card({
   newEpisode = false,
   top10 = false,
   ageRating = "13+",
-  episodeCount = "16 Episode",
+  episodeCount = null,
+  duration = null,
   genre = "Action • Adventure • Drama",
   isContinueWatching = false,
   progress = 0,
   timeRemaining = "2h 13m",
+  isSeries = true,
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef(null);
@@ -37,6 +39,17 @@ function Card({
   const handleImageLoad = (e) => {
     const { naturalWidth, naturalHeight } = e.target;
     setNaturalAspectRatio(naturalWidth / naturalHeight);
+  };
+
+  const getContentInfo = () => {
+    if (isContinueWatching) {
+      if (isSeries) {
+        return episodeCount || "S1 E1";
+      } else {
+        return duration || "2h 23m";
+      }
+    }
+    return null;
   };
 
   return (
@@ -57,7 +70,6 @@ function Card({
         margin: isHovered ? (isContinueWatching ? "0 0 2%" : "0 0 10%") : "0",
       }}
     >
-      {/* Image Container */}
       <div
         className="relative w-full overflow-hidden"
         style={{
@@ -68,7 +80,6 @@ function Card({
           transition: "height 0.3s ease",
         }}
       >
-        {/* Progress bar for Continue Watching */}
         {isContinueWatching && (
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#2D2F31] z-10">
             <div
@@ -78,7 +89,6 @@ function Card({
           </div>
         )}
 
-        {/* Original Image */}
         <img
           src={image}
           alt={alt}
@@ -90,7 +100,6 @@ function Card({
           onLoad={handleImageLoad}
         />
 
-        {/* Hover Image */}
         {hoverImage && !isContinueWatching && (
           <img
             src={hoverImage}
@@ -101,7 +110,6 @@ function Card({
           />
         )}
 
-        {/* Badges */}
         {newEpisode && (
           <div className="absolute top-2 left-2 bg-[#0F1E93] text-white text-xs font-bold px-2 py-1 rounded-lg">
             Episode Baru
@@ -116,24 +124,23 @@ function Card({
           </div>
         )}
 
-        {/* Title and Rating - Always visible */}
         {title && (
           <div className="absolute bottom-0 left-0 right-0 w-full p-3 bg-gradient-to-t from-black/80 to-transparent text-left">
             <div className="flex justify-between items-end">
               <h2 className={`font-bold text-sm ${titleSize}`}>{title}</h2>
-              <div className="flex items-center">
-                <FaStar className="text-white mr-1" />
-                <span className="font-bold text-sm">{rating}</span>
-              </div>
+              {!isContinueWatching && (
+                <div className="flex items-center">
+                  <FaStar className="text-white mr-1" />
+                  <span className="font-bold text-sm">{rating}</span>
+                </div>
+              )}
             </div>
           </div>
         )}
       </div>
 
-      {/* Hover Content - Only shown on hover */}
       {isHovered && (
         <div className={`w-full bg-[#181A1C] border-t border-[#2D2F31] p-2`}>
-          {/* Action Buttons */}
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center gap-2">
               <button className="bg-white text-black rounded-full p-2 hover:bg-opacity-90">
@@ -148,22 +155,17 @@ function Card({
             </button>
           </div>
 
-          {/* Age Rating and Episode Count */}
-          <div className="flex text-xs text-gray-300 gap-2 items-center mb-1">
-            <span className="font-bold bg-[#CDF1FF4D] rounded px-1 py-0.5">
-              {ageRating}
-            </span>
-            <span>{episodeCount}</span>
-          </div>
+          {isContinueWatching && getContentInfo() && (
+            <div className="flex text-xs text-gray-300 gap-2 items-center mb-1">
+              <span className="font-bold bg-[#CDF1FF4D] rounded px-1 py-0.5">
+                {ageRating}
+              </span>
+              <span>{getContentInfo()}</span>
+            </div>
+          )}
 
-          {/* Genre */}
-          <div className="text-sm text-[#C1C2C4] truncate w-full font-bold mb-1">
-            {genre}
-          </div>
-
-          {/* Progress Bar (for Continue Watching) */}
           {isContinueWatching && (
-            <div className="flex items-center gap-2 text-xs text-gray-300 mt-1">
+            <div className="flex items-center gap-2 text-xs text-gray-300 mb-1">
               <div className="w-full bg-[#2D2F31] h-1 rounded-full">
                 <div
                   className="h-full bg-[#0F8FF3] rounded-full"
@@ -173,6 +175,16 @@ function Card({
               <span>{timeRemaining}</span>
             </div>
           )}
+
+          {isContinueWatching ? (
+            <div className="text-xs text-[#C1C2C4] truncate w-full pt-1 font-bold">
+              {genre}
+            </div>
+          ) : (
+            <div className="text-sm text-[#C1C2C4] truncate w-full font-bold mb-1">
+              {genre}
+            </div>
+          )}
         </div>
       )}
 
@@ -180,6 +192,7 @@ function Card({
     </div>
   );
 }
+
 function CardSlider({
   cards,
   cardClassName = "",
@@ -247,8 +260,12 @@ function CardSlider({
               newEpisode={showBadges ? card.newEpisode : false}
               top10={showBadges ? card.top10 : false}
               ageRating={card.ageRating || "13+"}
-              episodeCount={card.episodeCount || "16 Episode"}
-              isContinueWatching={isContinueWatching}
+              episodeCount={card.isContinueWatching ? card.episodeCount : null}
+              duration={card.isContinueWatching ? card.duration : null}
+              isContinueWatching={isContinueWatching || card.isContinueWatching}
+              progress={card.progress}
+              timeRemaining={card.timeRemaining}
+              isSeries={card.isSeries}
             />
           </div>
         ))}
@@ -298,9 +315,12 @@ Card.propTypes = {
   top10: PropTypes.bool,
   ageRating: PropTypes.string,
   episodeCount: PropTypes.string,
+  duration: PropTypes.string,
+  genre: PropTypes.string,
   isContinueWatching: PropTypes.bool,
   progress: PropTypes.number,
   timeRemaining: PropTypes.string,
+  isSeries: PropTypes.bool,
 };
 
 CardSlider.propTypes = {
@@ -318,8 +338,10 @@ CardSlider.propTypes = {
       top10: PropTypes.bool,
       ageRating: PropTypes.string,
       episodeCount: PropTypes.string,
+      duration: PropTypes.string,
       progress: PropTypes.number,
       timeRemaining: PropTypes.string,
+      isSeries: PropTypes.bool,
     })
   ).isRequired,
   cardClassName: PropTypes.string,
