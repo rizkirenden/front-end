@@ -1,61 +1,128 @@
 import PropTypes from "prop-types";
 import { useState, useRef, useEffect } from "react";
-import { FaChevronLeft, FaChevronRight, FaStar } from "react-icons/fa";
+import {
+  FaChevronLeft,
+  FaChevronRight,
+  FaStar,
+  FaPlay,
+  FaCheck,
+  FaChevronDown,
+} from "react-icons/fa";
 
 function Card({
   title,
   image,
+  hoverImage, // Add this new prop
   alt,
   rating,
   imageWidth = "100%",
-  imageHeight = "170px",
+  imageHeight = "140px",
   bgColor = "bg-[#181A1C]",
   textColor = "text-white",
   titleSize = "text-lg",
   children,
   newEpisode = false,
   top10 = false,
+  ageRating = "13+",
+  episodeCount = "16 Episode",
+  genre = "Action • Adventure • Drama",
 }) {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <div
-      className={`flex flex-col items-start justify-between w-full p-0 ${bgColor} rounded-lg overflow-hidden shadow-md ${textColor} relative hover:scale-105 transition-transform duration-300`}
+      className={`flex flex-col items-start justify-between w-full p-0 ${bgColor} rounded-lg overflow-hidden shadow-md ${textColor} relative transition-all duration-300 ${
+        isHovered ? "transform scale-110 z-10" : ""
+      }`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        transition: "transform 0.3s ease, z-index 0.3s ease",
+      }}
     >
-      <img
-        src={image}
-        alt={alt}
-        width={imageWidth}
-        height={imageHeight}
-        className="object-cover w-full transition-opacity duration-300 hover:opacity-90"
-        style={{
-          width: imageWidth,
-          height: imageHeight,
-        }}
-      />
+      {/* Image Section with Hover Effect */}
+      <div className="relative w-full">
+        <div
+          className="relative"
+          style={{ width: imageWidth, height: imageHeight }}
+        >
+          {/* Main Image */}
+          <img
+            src={image}
+            alt={alt}
+            className={`absolute inset-0 object-cover w-full h-full transition-opacity duration-300 ${
+              isHovered && hoverImage ? "opacity-0" : "opacity-100"
+            }`}
+          />
 
-      {/* New Episode Badge */}
-      {newEpisode && (
-        <div className="absolute top-2 left-2 bg-[#0F1E93] text-white text-xs font-bold px-2 py-1 rounded-lg">
-          Episode Baru
+          {/* Hover Image (only shown when hovered and hoverImage provided) */}
+          {hoverImage && (
+            <img
+              src={hoverImage}
+              alt={alt}
+              className={`absolute inset-0 object-cover w-full h-full transition-opacity duration-300 ${
+                isHovered ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          )}
         </div>
-      )}
 
-      {/* Top 10 Badge */}
-      {top10 && (
-        <div className="absolute top-0 right-4 bg-red-600 text-white text-center leading-none p-1">
-          <div className="text-[8px] font-bold uppercase tracking-wider">
-            TOP
+        {/* Badges */}
+        {newEpisode && (
+          <div className="absolute top-2 left-2 bg-[#0F1E93] text-white text-xs font-bold px-2 py-1 rounded-lg">
+            Episode Baru
           </div>
-          <div className="text-lg font-bold">10</div>
-        </div>
+        )}
+        {top10 && (
+          <div className="absolute top-0 right-4 bg-red-600 text-white text-center leading-none p-1">
+            <div className="text-[8px] font-bold uppercase tracking-wider">
+              TOP
+            </div>
+            <div className="text-lg font-bold">10</div>
+          </div>
+        )}
+      </div>
+
+      {/* Hover Content */}
+      {isHovered && (
+        <>
+          <div className="w-full bg-[#181A1C] p-3">
+            <div className="flex justify-between items-center mb-2">
+              <div className="flex items-center space-x-2">
+                <button className="bg-white text-black rounded-full p-2 hover:bg-opacity-90">
+                  <FaPlay size={12} />
+                </button>
+                <button className="bg-white text-black rounded-full p-2 hover:bg-opacity-90">
+                  <FaCheck size={12} />
+                </button>
+              </div>
+              <button className="bg-white text-black rounded-full p-2 hover:bg-opacity-90">
+                <FaChevronDown size={12} />
+              </button>
+            </div>
+            <div className="flex text-xs text-gray-300 space-x-2 items-center">
+              <span className="font-bold bg-[#CDF1FF4D] rounded-lg px-1 py-0.5">
+                {ageRating}
+              </span>
+              <span>{episodeCount}</span>
+            </div>
+          </div>
+          <div className="w-full px-3 pb-3 bg-[#181A1C]">
+            <div className="text-sm text-gray-400 truncate w-full font-bold">
+              {genre}
+            </div>
+          </div>
+        </>
       )}
 
+      {/* Title and Rating */}
       {title && (
-        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent text-left">
+        <div className="w-full p-3 bg-gradient-to-t from-black to-transparent text-left">
           <div className="flex justify-between items-end">
             <h2 className={`font-bold text-sm ${titleSize}`}>{title}</h2>
             <div className="flex items-center">
               <FaStar className="text-white mr-1" />
-              <span className="font-bold">{rating}</span>
+              <span className="font-bold text-sm">{rating}</span>
             </div>
           </div>
         </div>
@@ -64,7 +131,6 @@ function Card({
     </div>
   );
 }
-
 function CardSlider({
   cards,
   cardClassName = "",
@@ -134,6 +200,8 @@ function CardSlider({
               {...card}
               newEpisode={showBadges ? card.newEpisode : false}
               top10={showBadges ? card.top10 : false}
+              ageRating={card.ageRating || "13+"}
+              episodeCount={card.episodeCount || "16 Episode"}
             />
           </div>
         ))}
@@ -187,6 +255,7 @@ function CardSlider({
 Card.propTypes = {
   title: PropTypes.string,
   image: PropTypes.string.isRequired,
+  hoverImage: PropTypes.string,
   alt: PropTypes.string.isRequired,
   rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   imageWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -197,6 +266,8 @@ Card.propTypes = {
   children: PropTypes.node,
   newEpisode: PropTypes.bool,
   top10: PropTypes.bool,
+  ageRating: PropTypes.string,
+  episodeCount: PropTypes.string,
 };
 
 // Prop Types untuk CardSlider
@@ -213,6 +284,8 @@ CardSlider.propTypes = {
       textColor: PropTypes.string,
       newEpisode: PropTypes.bool,
       top10: PropTypes.bool,
+      ageRating: PropTypes.string,
+      episodeCount: PropTypes.string,
     })
   ).isRequired,
   cardClassName: PropTypes.string,

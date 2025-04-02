@@ -25,11 +25,26 @@ import topTranding2 from "../assets/Number=16.png";
 import topTranding3 from "../assets/Number=30.png";
 import topTranding4 from "../assets/Number=10.png";
 import topTranding5 from "../assets/Number=6.png";
-import newReleaseCards1 from "../assets/Number=6.png";
-import newReleaseCards2 from "../assets/Number=17.png";
-import newReleaseCards3 from "../assets/Number=12.png";
-import newReleaseCards4 from "../assets/Number=9.png";
+import newReleaseCards1 from "../assets/Number=26.png";
+import newReleaseCards2 from "../assets/Number=31.png";
+import newReleaseCards3 from "../assets/Number=23.png";
+import newReleaseCards4 from "../assets/Number=27.png";
 import newReleaseCards5 from "../assets/Number=13.png";
+import cardImageHover1 from "../assets/Type=11.png";
+import cardImageHover2 from "../assets/Type=21.png";
+import cardImageHover3 from "../assets/image 242.png";
+import cardImageHover4 from "../assets/image 223.png";
+import cardImageHover5 from "../assets/image 226.png";
+import cardImageHover7 from "../assets/Type=7.png";
+import cardImageHover8 from "../assets/image 230.png";
+import cardImageHover9 from "../assets/image 243.png";
+import cardImageHover10 from "../assets/image 224.png";
+import cardImageHover11 from "../assets/Type=6.png";
+import cardImageHover12 from "../assets/Type=14.png";
+import cardImageHover13 from "../assets/Type=24.png";
+import cardImageHover14 from "../assets/Type=30.png";
+import cardImageHover15 from "../assets/Type=22.png";
+import cardImageHover16 from "../assets/image 227.png";
 
 function Index() {
   const [isMuted, setIsMuted] = useState(false);
@@ -106,6 +121,7 @@ function Index() {
   const topRatingCards = [
     {
       image: topRating1,
+      hoverImage: cardImageHover1,
       alt: "The Last of Us",
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
@@ -116,6 +132,7 @@ function Index() {
     },
     {
       image: topRating2,
+      hoverImage: cardImageHover2,
       alt: "House of the Dragon",
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
@@ -126,6 +143,7 @@ function Index() {
     },
     {
       image: topRating3,
+      hoverImage: cardImageHover3,
       alt: "Wednesday",
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
@@ -136,6 +154,7 @@ function Index() {
     },
     {
       image: topRating4,
+      hoverImage: cardImageHover4,
       alt: "The Mandalorian",
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
@@ -146,6 +165,7 @@ function Index() {
     },
     {
       image: topRating5,
+      hoverImage: cardImageHover5,
       alt: "The Mandalorian",
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
@@ -159,6 +179,7 @@ function Index() {
   const topTrendingCard = [
     {
       image: topTranding1,
+      hoverImage: cardImageHover7,
       alt: "The Mandalorian",
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
@@ -169,6 +190,7 @@ function Index() {
     },
     {
       image: topTranding2,
+      hoverImage: cardImageHover8,
       alt: "The Mandalorian",
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
@@ -179,6 +201,7 @@ function Index() {
     },
     {
       image: topTranding3,
+      hoverImage: cardImageHover9,
       alt: "The Mandalorian",
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
@@ -189,6 +212,7 @@ function Index() {
     },
     {
       image: topTranding4,
+      hoverImage: cardImageHover10,
       alt: "The Mandalorian",
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
@@ -199,6 +223,7 @@ function Index() {
     },
     {
       image: topTranding5,
+      hoverImage: cardImageHover11,
       alt: "The Mandalorian",
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
@@ -212,6 +237,7 @@ function Index() {
   const newReleaseCards = [
     {
       image: newReleaseCards1,
+      hoverImage: cardImageHover12,
       alt: "The Mandalorian",
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
@@ -222,6 +248,7 @@ function Index() {
     },
     {
       image: newReleaseCards2,
+      hoverImage: cardImageHover13,
       alt: "The Mandalorian",
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
@@ -232,6 +259,7 @@ function Index() {
     },
     {
       image: newReleaseCards3,
+      hoverImage: cardImageHover14,
       alt: "The Mandalorian",
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
@@ -242,6 +270,7 @@ function Index() {
     },
     {
       image: newReleaseCards4,
+      hoverImage: cardImageHover15,
       alt: "The Mandalorian",
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
@@ -252,6 +281,7 @@ function Index() {
     },
     {
       image: newReleaseCards5,
+      hoverImage: cardImageHover16,
       alt: "The Mandalorian",
       bgColor: "bg-[#181A1C]",
       textColor: "text-white",
