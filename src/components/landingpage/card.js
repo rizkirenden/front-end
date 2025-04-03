@@ -397,12 +397,12 @@ const CardSlider = ({
           <button
             onClick={prevCards}
             disabled={currentIndex === 0}
-            className={`absolute left-0 top-1/2 -translate-y-1/2 bg-[#181A1C] text-white p-3 rounded-full z-50 hover:bg-opacity-100 transition ${
-              currentIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
+            className={`absolute left-0 top-1/2 -translate-y-1/2 bg-[#181A1C] border-2 border-white text-white p-2 rounded-full z-50 transition ${
+              currentIndex === 0 ? "cursor-not-allowed" : ""
             }`}
             style={{
               left: "12px",
-              transform: "translateY(-50%) scale(1.2)",
+              transform: "translateY(-50%) scale(1)",
             }}
           >
             <FaChevronLeft className="text-lg" />
@@ -410,14 +410,14 @@ const CardSlider = ({
           <button
             onClick={nextCards}
             disabled={currentIndex >= cards.length - effectiveVisibleCards}
-            className={`absolute right-0 top-1/2 -translate-y-1/2 bg-[#181A1C] text-white p-3 rounded-full z-50 hover:bg-opacity-100 transition ${
+            className={`absolute right-0 top-1/2 -translate-y-1/2 bg-[#181A1C] border-2 border-white text-white p-2 rounded-full z-50 transition ${
               currentIndex >= cards.length - effectiveVisibleCards
-                ? "opacity-50 cursor-not-allowed"
+                ? "cursor-not-allowed"
                 : ""
             }`}
             style={{
               right: "12px",
-              transform: "translateY(-50%) scale(1.2)",
+              transform: "translateY(-50%) scale(1)",
             }}
           >
             <FaChevronRight className="text-lg" />

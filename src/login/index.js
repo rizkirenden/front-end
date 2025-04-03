@@ -20,12 +20,10 @@ function Index() {
 
   const handleLogin = () => {
     console.log("Login attempt with:", inputValue, passwordValue);
-    // Add your login logic here
   };
 
   const handleGoogleLogin = () => {
     console.log("Google login clicked");
-    // Add your Google login logic here
   };
 
   return (

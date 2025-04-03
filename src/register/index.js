@@ -29,12 +29,10 @@ function Index() {
       console.log("Passwords don't match!");
       return;
     }
-    // Add your login logic here
   };
 
   const handleGoogleLogin = () => {
     console.log("Google login clicked");
-    // Add your Google login logic here
   };
 
   return (
@@ -103,7 +101,7 @@ function Index() {
             Sudah punya akun?{" "}
             <span className="text-white hover:underline">Masuk</span>
           </a>
-          <div></div> {/* Kolom kosong untuk mempertahankan layout */}
+          <div></div>
         </div>
         <div className="w-full px-2 sm:px-4">
           <Btn
