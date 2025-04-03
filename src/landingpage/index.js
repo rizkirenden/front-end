@@ -461,43 +461,42 @@ function Index() {
         </div>
       </section>
 
-      {/* Top Rating Section */}
-      <section className="py-10 px-4 sm:px-8 md:px-16 lg:px-32 bg-[#181A1C]">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-8">
+      <section className="py-6 sm:py-10 px-4 sm:px-8 md:px-16 lg:px-32 bg-[#181A1C]">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-8">
           Top Rating Film dan Series Hari Ini
         </h2>
         <div className="w-full overflow-hidden">
           <CardSlider
             cards={topRatingCards}
-            cardClassName="max-w-[280px]"
+            cardClassName="max-w-[180px] sm:max-w-[280px]" // Smaller max width on mobile
             showArrows={true}
             showBadges={true}
           />
         </div>
       </section>
 
-      <section className="py-10 px-4 sm:px-8 md:px-16 lg:px-32 bg-[#181A1C]">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-8">
+      <section className="py-6 sm:py-10 px-4 sm:px-8 md:px-16 lg:px-32 bg-[#181A1C]">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-8">
           Film Trending
         </h2>
         <div className="w-full overflow-hidden">
           <CardSlider
             cards={topTrendingCard}
-            cardClassName="max-w-[280px]"
+            cardClassName="max-w-[180px] sm:max-w-[280px]" // Smaller max width on mobile
             showArrows={true}
             showBadges={true}
           />
         </div>
       </section>
 
-      <section className="py-10 px-4 sm:px-8 md:px-16 lg:px-32 bg-[#181A1C]">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-8">
+      <section className="py-6 sm:py-10 px-4 sm:px-8 md:px-16 lg:px-32 bg-[#181A1C]">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-8">
           Rilis Baru
         </h2>
         <div className="w-full overflow-hidden">
           <CardSlider
             cards={newReleaseCards}
-            cardClassName="max-w-[280px]"
+            cardClassName="max-w-[180px] sm:max-w-[280px]" // Smaller max width on mobile
             showArrows={true}
             showBadges={true}
           />
