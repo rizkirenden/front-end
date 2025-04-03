@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
-import Suara from "./suara"; // Assuming Suara is a sound control component
-import Btn from "./btn"; // Assuming Btn is a button component
+import Suara from "./suara";
+import Btn from "./btn";
 import { FaInfoCircle } from "react-icons/fa";
 
 function HeroSection({
@@ -20,7 +20,6 @@ function HeroSection({
   onToggleMute,
   bgSize = "cover",
   bgPosition = "center",
-  bgExtended = false,
 }) {
   return (
     <section
@@ -54,7 +53,6 @@ function HeroSection({
           )}
         </div>
 
-        {/* Container for Buttons - modifikasi untuk mobile */}
         <div className="w-full flex flex-row items-center justify-between gap-2">
           {/* Group tombol kiri */}
           <div className="flex items-center gap-2">
@@ -81,13 +79,12 @@ function HeroSection({
             </div>
           </div>
 
-          {/* Tombol mute di ujung kanan */}
           <div className="border-2 border-white rounded-full p-1 md:p-2">
             <Suara
               isMuted={isMuted}
               onToggle={onToggleMute}
-              size="sm" // kecil di mobile
-              className="md:size-md" // normal di desktop
+              size="sm"
+              className="md:size-md"
             />
           </div>
         </div>

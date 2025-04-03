@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LandingPage from "./landingpage/index"; // Import directly from /landingpage/Index.js
-import LoginPage from "./login/index"; // Import directly from /login/Index.js
-import RegisterPage from "./register/index"; // Import directly from /register/Index.js
+import LandingPage from "./landingpage/index";
+import LoginPage from "./login/index";
+import RegisterPage from "./register/index";
 
 function App() {
   return (

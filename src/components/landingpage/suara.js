@@ -7,7 +7,6 @@ export default function Suara({
   className = "",
   size = "md",
 }) {
-  // Ukuran berdasarkan prop size
   const sizeClasses = {
     sm: "p-1",
     md: "p-2",
@@ -37,5 +36,5 @@ Suara.propTypes = {
   isMuted: PropTypes.bool.isRequired,
   onToggle: PropTypes.func.isRequired,
   className: PropTypes.string,
-  size: PropTypes.oneOf(["sm", "md"]), // Tambahkan prop size
+  size: PropTypes.oneOf(["sm", "md"]),
 };

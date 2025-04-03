@@ -9,7 +9,20 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 
-function Card({
+const CARD_STYLES = {
+  base: "flex flex-col p-0 rounded-lg overflow-hidden shadow-md relative transition-all duration-300",
+  hoverPanel: "w-full bg-[#181A1C] border-t border-[#2D2F31] p-2",
+  newEpisodeBadge:
+    "bg-[#0F1E93] text-white text-[6px] xs:text-[8px] sm:text-xs font-bold px-1 xs:px-1.5 sm:px-2 py-0.5 rounded-sm sm:rounded",
+  top10Badge: "bg-red-600 text-white text-center leading-none p-0.5",
+  ageRating: "bg-[#CDF1FF4D] rounded px-1 py-0.5",
+  progressBar: "w-full bg-[#2D2F31] h-1 rounded-full",
+  progressFill: "h-full bg-[#0F8FF3] rounded-full",
+  actionButton:
+    "bg-white text-black rounded-full p-1 sm:p-2 hover:bg-opacity-90",
+};
+
+const Card = ({
   title,
   image,
   hoverImage,
@@ -31,11 +44,11 @@ function Card({
   progress = 0,
   timeRemaining = "2h 13m",
   position = "middle",
-}) {
+}) => {
   const [isHovered, setIsHovered] = useState(false);
-  const cardRef = useRef(null);
   const [naturalAspectRatio, setNaturalAspectRatio] = useState(16 / 9);
   const [isMobile, setIsMobile] = useState(false);
+  const cardRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -84,7 +97,7 @@ function Card({
   return (
     <div
       ref={cardRef}
-      className={`flex flex-col p-0 ${bgColor} rounded-lg overflow-hidden shadow-md ${textColor} relative transition-all duration-300`}
+      className={`${CARD_STYLES.base} ${bgColor} ${textColor}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
@@ -128,12 +141,17 @@ function Card({
         )}
 
         {newEpisode && (
-          <div className="absolute top-1 left-1 bg-[#0F1E93] text-white text-[6px] xs:text-[8px] sm:text-xs font-bold px-1 xs:px-1.5 sm:px-2 py-0.5 rounded-sm sm:rounded">
+          <div
+            className={`absolute top-1 left-1 ${CARD_STYLES.newEpisodeBadge}`}
+          >
             Episode Baru
           </div>
         )}
+
         {top10 && (
-          <div className="absolute top-0 right-1 sm:right-2 bg-red-600 text-white text-center leading-none p-0.5">
+          <div
+            className={`absolute top-0 right-1 sm:right-2 ${CARD_STYLES.top10Badge}`}
+          >
             <div className="text-[4px] xs:text-[5px] sm:text-[6px] font-bold uppercase tracking-tighter">
               TOP
             </div>
@@ -161,23 +179,23 @@ function Card({
       </div>
 
       {isHovered && (
-        <div className={`w-full bg-[#181A1C] border-t border-[#2D2F31] p-2`}>
+        <div className={CARD_STYLES.hoverPanel}>
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center gap-1 sm:gap-2">
-              <button className="bg-white text-black rounded-full p-1 sm:p-2 hover:bg-opacity-90">
+              <button className={CARD_STYLES.actionButton}>
                 <FaPlay className="text-xs sm:text-sm" />
               </button>
-              <button className="bg-white text-black rounded-full p-1 sm:p-2 hover:bg-opacity-90">
+              <button className={CARD_STYLES.actionButton}>
                 <FaCheck className="text-xs sm:text-sm" />
               </button>
             </div>
-            <button className="bg-white text-black rounded-full p-1 sm:p-2 hover:bg-opacity-90">
+            <button className={CARD_STYLES.actionButton}>
               <FaChevronDown className="text-xs sm:text-sm" />
             </button>
           </div>
 
           <div className="flex text-[10px] sm:text-xs text-gray-300 gap-1 sm:gap-2 items-center mb-1">
-            <span className="font-bold bg-[#CDF1FF4D] rounded px-1 py-0.5">
+            <span className={`font-bold ${CARD_STYLES.ageRating}`}>
               {ageRating}
             </span>
             {duration && <span>{duration}</span>}
@@ -186,11 +204,11 @@ function Card({
 
           {isContinueWatching && (
             <div className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-gray-300 mb-1">
-              <div className="w-full bg-[#2D2F31] h-1 rounded-full">
+              <div className={CARD_STYLES.progressBar}>
                 <div
-                  className="h-full bg-[#0F8FF3] rounded-full"
+                  className={CARD_STYLES.progressFill}
                   style={{ width: `${progress}%` }}
-                ></div>
+                />
               </div>
               <span>{timeRemaining}</span>
             </div>
@@ -205,9 +223,9 @@ function Card({
       {children}
     </div>
   );
-}
+};
 
-function CardSlider({
+const CardSlider = ({
   cards,
   cardClassName = "",
   showArrows = true,
@@ -215,23 +233,12 @@ function CardSlider({
   visibleCards = 5,
   isContinueWatching = false,
   initialVisibleCards = null,
-}) {
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardWidth, setCardWidth] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const sliderRef = useRef(null);
   const containerRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-      updateCardWidth();
-    };
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const effectiveVisibleCards = isContinueWatching
     ? isMobile
@@ -248,16 +255,12 @@ function CardSlider({
       const containerWidth = containerRef.current.offsetWidth;
       const gap = isMobile ? 12 : 16;
       const sidePadding = isMobile ? 32 : 48;
-
       const availableWidth = containerWidth - sidePadding * 2;
+
       const width = isContinueWatching
         ? isMobile
           ? availableWidth * 0.85
-          : Math.min(
-              (availableWidth - (effectiveVisibleCards - 1) * gap) /
-                effectiveVisibleCards,
-              350
-            )
+          : Math.min((availableWidth - 3 * gap) / 4, 350)
         : isMobile
         ? Math.min(
             (availableWidth - (effectiveVisibleCards - 1) * gap) /
@@ -282,22 +285,17 @@ function CardSlider({
     if (!sliderRef.current) return;
 
     const gap = isMobile ? 12 : 16;
-    const scrollAmount = (cardWidth + gap) * effectiveVisibleCards;
+    const scrollAmount =
+      (cardWidth + gap) * (isContinueWatching ? 4 : effectiveVisibleCards);
     const newScrollLeft = sliderRef.current.scrollLeft + scrollAmount;
     const maxScrollLeft =
       sliderRef.current.scrollWidth - sliderRef.current.clientWidth;
 
     if (newScrollLeft >= maxScrollLeft) {
-      sliderRef.current.scrollTo({
-        left: maxScrollLeft,
-        behavior: "smooth",
-      });
+      sliderRef.current.scrollTo({ left: maxScrollLeft, behavior: "smooth" });
       setCurrentIndex(cards.length - effectiveVisibleCards);
     } else {
-      sliderRef.current.scrollBy({
-        left: scrollAmount,
-        behavior: "smooth",
-      });
+      sliderRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
       setCurrentIndex((prev) =>
         Math.min(
           prev + effectiveVisibleCards,
@@ -311,28 +309,32 @@ function CardSlider({
     if (!sliderRef.current) return;
 
     const gap = isMobile ? 12 : 16;
-    const scrollAmount = (cardWidth + gap) * effectiveVisibleCards;
+    const scrollAmount =
+      (cardWidth + gap) * (isContinueWatching ? 4 : effectiveVisibleCards);
     const newScrollLeft = sliderRef.current.scrollLeft - scrollAmount;
 
     if (newScrollLeft <= 0) {
-      sliderRef.current.scrollTo({
-        left: 0,
-        behavior: "smooth",
-      });
+      sliderRef.current.scrollTo({ left: 0, behavior: "smooth" });
       setCurrentIndex(0);
     } else {
-      sliderRef.current.scrollBy({
-        left: -scrollAmount,
-        behavior: "smooth",
-      });
+      sliderRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
       setCurrentIndex((prev) => Math.max(prev - effectiveVisibleCards, 0));
     }
   };
 
   useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      updateCardWidth();
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [updateCardWidth]);
+
+  useEffect(() => {
     updateCardWidth();
-    window.addEventListener("resize", updateCardWidth);
-    return () => window.removeEventListener("resize", updateCardWidth);
   }, [updateCardWidth]);
 
   useEffect(() => {
@@ -424,7 +426,7 @@ function CardSlider({
       )}
     </div>
   );
-}
+};
 
 Card.propTypes = {
   title: PropTypes.string,

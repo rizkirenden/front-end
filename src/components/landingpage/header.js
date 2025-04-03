@@ -18,13 +18,11 @@ function Header({
   profileComponent,
   className = "",
 }) {
-  // Map color values to Tailwind classes
   const bgColorClass =
     {
       "#181A1C": "bg-[#181A1C]",
       "#ffffff": "bg-white",
       "#000000": "bg-black",
-      // Add more color mappings as needed
     }[bgColor] || "bg-[#181A1C]";
 
   return (
@@ -67,12 +65,12 @@ function Header({
 
 Header.propTypes = {
   logo: PropTypes.string.isRequired,
-  logoMobile: PropTypes.string, // Tambahkan propTypes untuk logoMobile
+  logoMobile: PropTypes.string,
   altText: PropTypes.string,
   logoWidth: PropTypes.number,
   logoHeight: PropTypes.number,
-  mobileLogoWidth: PropTypes.number, // Tambahkan propTypes untuk mobileLogoWidth
-  mobileLogoHeight: PropTypes.number, // Tambahkan propTypes untuk mobileLogoHeight
+  mobileLogoWidth: PropTypes.number,
+  mobileLogoHeight: PropTypes.number,
   bgColor: PropTypes.string,
   mobileHeight: PropTypes.string,
   desktopHeight: PropTypes.string,

@@ -12,7 +12,7 @@ function Input({
   onChange,
   className = "",
   label = "",
-  isPassword = false, // New prop for password field
+  isPassword = false,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const inputStyle = {
@@ -99,7 +99,7 @@ Input.propTypes = {
   onChange: PropTypes.func,
   className: PropTypes.string,
   label: PropTypes.string,
-  isPassword: PropTypes.bool, // Added prop type for password field
+  isPassword: PropTypes.bool,
 };
 
 export default Input;
