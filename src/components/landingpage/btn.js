@@ -1,4 +1,3 @@
-// components/landingpage/btn.js
 import PropTypes from "prop-types";
 
 export default function Btn({
@@ -9,9 +8,15 @@ export default function Btn({
   textColor = "text-white",
   rounded = "rounded-md",
   className = "",
+  size = "md", // 'sm' or 'md'
   ...props
 }) {
-  const commonClasses = `px-6 py-2 ${bgColor} ${textColor} ${rounded} font-medium hover:opacity-90 transition ${className}`;
+  const sizeClasses = {
+    sm: "px-4 py-1 text-sm",
+    md: "px-6 py-2 text-base",
+  };
+
+  const commonClasses = `${sizeClasses[size]} ${bgColor} ${textColor} ${rounded} font-medium hover:opacity-90 transition ${className}`;
 
   return href ? (
     <a href={href} className={commonClasses} {...props}>
@@ -32,4 +37,5 @@ Btn.propTypes = {
   textColor: PropTypes.string,
   rounded: PropTypes.string,
   className: PropTypes.string,
+  size: PropTypes.oneOf(["sm", "md"]),
 };

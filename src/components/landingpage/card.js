@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import {
   FaChevronLeft,
   FaChevronRight,
@@ -26,11 +26,11 @@ function Card({
   ageRating = "13+",
   episodeCount = null,
   duration = null,
-  genre = "Action • Adventure • Drama",
+  genre,
   isContinueWatching = false,
   progress = 0,
   timeRemaining = "2h 13m",
-  isSeries = true,
+  position = "middle",
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const cardRef = useRef(null);
@@ -52,6 +52,35 @@ function Card({
     setNaturalAspectRatio(naturalWidth / naturalHeight);
   };
 
+  const getTransformScale = () => {
+    if (isContinueWatching) return 1.05;
+    return isMobile ? 1.15 : 1.35;
+  };
+
+  const getTransformOrigin = () => {
+    if (position === "left") return "left top";
+    if (position === "right") return "right top";
+    return "center top";
+  };
+
+  const getHoverMargin = () => {
+    const scale = getTransformScale();
+    const offsetPercentage = (scale - 1) * 50;
+
+    if (position === "left") return `0 ${offsetPercentage}% 20px 0`;
+    if (position === "right") return `0 0 20px ${offsetPercentage}%`;
+    return `0 ${offsetPercentage / 2}% 20px ${offsetPercentage / 2}%`;
+  };
+
+  const getHoverHeight = () => {
+    if (isContinueWatching) {
+      return isMobile ? "180px" : "220px";
+    }
+    return `calc(${imageWidth} * ${naturalAspectRatio} * ${
+      isMobile ? 1 : 1.15
+    })`;
+  };
+
   return (
     <div
       ref={cardRef}
@@ -60,43 +89,23 @@ function Card({
       onMouseLeave={() => setIsHovered(false)}
       style={{
         width: imageWidth,
-        transform: isHovered
-          ? isContinueWatching
-            ? "scale(1.05)"
-            : isMobile
-            ? "scale(1.05)"
-            : "scale(1.50)"
-          : "scale(1)",
-        transformOrigin: "center top",
-        zIndex: isHovered ? 50 : 1,
-        margin: isHovered
-          ? isContinueWatching
-            ? "0 0 2%"
-            : isMobile
-            ? "0 0 2%"
-            : "0 0 10%"
-          : "0",
+        transform: isHovered ? `scale(${getTransformScale()})` : "scale(1)",
+        transformOrigin: getTransformOrigin(),
+        zIndex: isHovered ? 20 : 1,
+        margin: isHovered ? getHoverMargin() : "0",
       }}
     >
       <div
         className="relative w-full overflow-hidden"
         style={{
-          height:
-            isHovered && !isContinueWatching
-              ? isMobile
-                ? `calc(${imageWidth} * ${naturalAspectRatio} * 0.9)`
-                : `calc(${imageWidth} * ${naturalAspectRatio})`
-              : isContinueWatching
-              ? isMobile
-                ? "160px"
-                : "200px"
-              : isMobile
-              ? "170px"
-              : imageHeight,
+          height: isHovered
+            ? getHoverHeight()
+            : isMobile
+            ? "170px"
+            : imageHeight,
           transition: "height 0.3s ease",
         }}
       >
-        {/* Main image */}
         <img
           src={image}
           alt={alt}
@@ -108,7 +117,6 @@ function Card({
           onLoad={handleImageLoad}
         />
 
-        {/* Hover image */}
         {hoverImage && !isContinueWatching && (
           <img
             src={hoverImage}
@@ -119,22 +127,22 @@ function Card({
           />
         )}
 
-        {/* Badges */}
         {newEpisode && (
-          <div className="absolute top-2 left-2 bg-[#0F1E93] text-white text-xs font-bold px-2 py-1 rounded-lg">
+          <div className="absolute top-1 left-1 bg-[#0F1E93] text-white text-[6px] xs:text-[8px] sm:text-xs font-bold px-1 xs:px-1.5 sm:px-2 py-0.5 rounded-sm sm:rounded">
             Episode Baru
           </div>
         )}
         {top10 && (
-          <div className="absolute top-0 right-4 bg-red-600 text-white text-center leading-none p-1">
-            <div className="text-[8px] font-bold uppercase tracking-wider">
+          <div className="absolute top-0 right-1 sm:right-2 bg-red-600 text-white text-center leading-none p-0.5">
+            <div className="text-[4px] xs:text-[5px] sm:text-[6px] font-bold uppercase tracking-tighter">
               TOP
             </div>
-            <div className="text-lg font-bold">10</div>
+            <div className="text-[6px] xs:text-[7px] sm:text-xs font-bold">
+              10
+            </div>
           </div>
         )}
 
-        {/* Title and rating */}
         {title && (
           <div className="absolute bottom-0 left-0 right-0 w-full p-2 sm:p-3 bg-gradient-to-t from-black/80 to-transparent text-left">
             <div className="flex justify-between items-end">
@@ -152,7 +160,6 @@ function Card({
         )}
       </div>
 
-      {/* Hover section */}
       {isHovered && (
         <div className={`w-full bg-[#181A1C] border-t border-[#2D2F31] p-2`}>
           <div className="flex justify-between items-center mb-2">
@@ -169,7 +176,6 @@ function Card({
             </button>
           </div>
 
-          {/* Rating and duration info */}
           <div className="flex text-[10px] sm:text-xs text-gray-300 gap-1 sm:gap-2 items-center mb-1">
             <span className="font-bold bg-[#CDF1FF4D] rounded px-1 py-0.5">
               {ageRating}
@@ -178,7 +184,6 @@ function Card({
             {episodeCount && <span>{episodeCount}</span>}
           </div>
 
-          {/* Progress bar for continue watching */}
           {isContinueWatching && (
             <div className="flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-gray-300 mb-1">
               <div className="w-full bg-[#2D2F31] h-1 rounded-full">
@@ -191,7 +196,6 @@ function Card({
             </div>
           )}
 
-          {/* Genre */}
           <div className="text-[10px] sm:text-xs text-[#C1C2C4] truncate font-bold flex justify-center items-center w-full text-center">
             {genre}
           </div>
@@ -221,6 +225,7 @@ function CardSlider({
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
+      updateCardWidth();
     };
 
     handleResize();
@@ -228,36 +233,42 @@ function CardSlider({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Perubahan utama di sini:
-  const effectiveVisibleCards =
-    isContinueWatching && isMobile
-      ? 1 // Hanya 1 card untuk lanjutkan menonton di mobile
-      : isMobile
-      ? 3 // Default mobile (bukan lanjutkan menonton)
-      : initialVisibleCards !== null
-      ? initialVisibleCards
-      : visibleCards;
+  const effectiveVisibleCards = isContinueWatching
+    ? isMobile
+      ? 1
+      : 4
+    : isMobile
+    ? 3
+    : initialVisibleCards !== null
+    ? initialVisibleCards
+    : visibleCards;
 
-  const updateCardWidth = () => {
+  const updateCardWidth = useCallback(() => {
     if (containerRef.current && sliderRef.current?.children[0]) {
       const containerWidth = containerRef.current.offsetWidth;
       const gap = isMobile ? 12 : 16;
+      const sidePadding = isMobile ? 32 : 48;
 
-      // Perhitungan lebar card yang berbeda untuk lanjutkan menonton di mobile
-      const width =
-        isContinueWatching && isMobile
-          ? containerWidth * 0.8 // Lebih besar untuk lanjutkan menonton di mobile
-          : isMobile
-          ? Math.min(
-              (containerWidth - (effectiveVisibleCards - 1) * gap) /
-                effectiveVisibleCards,
-              180
-            )
+      const availableWidth = containerWidth - sidePadding * 2;
+      const width = isContinueWatching
+        ? isMobile
+          ? availableWidth * 0.85
           : Math.min(
-              (containerWidth - (effectiveVisibleCards - 1) * gap) /
+              (availableWidth - (effectiveVisibleCards - 1) * gap) /
                 effectiveVisibleCards,
-              280
-            );
+              350
+            )
+        : isMobile
+        ? Math.min(
+            (availableWidth - (effectiveVisibleCards - 1) * gap) /
+              effectiveVisibleCards,
+            200
+          )
+        : Math.min(
+            (availableWidth - (effectiveVisibleCards - 1) * gap) /
+              effectiveVisibleCards,
+            300
+          );
 
       setCardWidth(width);
 
@@ -265,47 +276,94 @@ function CardSlider({
         child.style.width = `${width}px`;
       });
     }
-  };
+  }, [effectiveVisibleCards, isMobile, isContinueWatching]);
 
   const nextCards = () => {
-    const newIndex = Math.min(
-      currentIndex + effectiveVisibleCards,
-      cards.length - effectiveVisibleCards
-    );
-    setCurrentIndex(newIndex);
-    sliderRef.current.scrollTo({
-      left: newIndex * (cardWidth + (isMobile ? 12 : 16)),
-      behavior: "smooth",
-    });
+    if (!sliderRef.current) return;
+
+    const gap = isMobile ? 12 : 16;
+    const scrollAmount = (cardWidth + gap) * effectiveVisibleCards;
+    const newScrollLeft = sliderRef.current.scrollLeft + scrollAmount;
+    const maxScrollLeft =
+      sliderRef.current.scrollWidth - sliderRef.current.clientWidth;
+
+    if (newScrollLeft >= maxScrollLeft) {
+      sliderRef.current.scrollTo({
+        left: maxScrollLeft,
+        behavior: "smooth",
+      });
+      setCurrentIndex(cards.length - effectiveVisibleCards);
+    } else {
+      sliderRef.current.scrollBy({
+        left: scrollAmount,
+        behavior: "smooth",
+      });
+      setCurrentIndex((prev) =>
+        Math.min(
+          prev + effectiveVisibleCards,
+          cards.length - effectiveVisibleCards
+        )
+      );
+    }
   };
 
   const prevCards = () => {
-    const newIndex = Math.max(currentIndex - effectiveVisibleCards, 0);
-    setCurrentIndex(newIndex);
-    sliderRef.current.scrollTo({
-      left: newIndex * (cardWidth + (isMobile ? 12 : 16)),
-      behavior: "smooth",
-    });
+    if (!sliderRef.current) return;
+
+    const gap = isMobile ? 12 : 16;
+    const scrollAmount = (cardWidth + gap) * effectiveVisibleCards;
+    const newScrollLeft = sliderRef.current.scrollLeft - scrollAmount;
+
+    if (newScrollLeft <= 0) {
+      sliderRef.current.scrollTo({
+        left: 0,
+        behavior: "smooth",
+      });
+      setCurrentIndex(0);
+    } else {
+      sliderRef.current.scrollBy({
+        left: -scrollAmount,
+        behavior: "smooth",
+      });
+      setCurrentIndex((prev) => Math.max(prev - effectiveVisibleCards, 0));
+    }
   };
 
   useEffect(() => {
     updateCardWidth();
     window.addEventListener("resize", updateCardWidth);
     return () => window.removeEventListener("resize", updateCardWidth);
-  }, [effectiveVisibleCards, cards.length, isMobile]);
+  }, [updateCardWidth]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sliderRef.current) {
+        const gap = isMobile ? 12 : 16;
+        const scrollPosition = sliderRef.current.scrollLeft;
+        const cardWidthWithGap = cardWidth + gap;
+        const newIndex = Math.round(scrollPosition / cardWidthWithGap);
+        setCurrentIndex(newIndex);
+      }
+    };
+
+    const slider = sliderRef.current;
+    if (slider) {
+      slider.addEventListener("scroll", handleScroll);
+      return () => slider.removeEventListener("scroll", handleScroll);
+    }
+  }, [cardWidth, isMobile]);
 
   return (
-    <div className="relative w-full" ref={containerRef}>
+    <div className="relative w-full overflow-visible" ref={containerRef}>
       <div
         ref={sliderRef}
-        className="flex gap-3 sm:gap-4 overflow-x-hidden w-full py-4 scroll-smooth"
+        className="flex gap-3 sm:gap-4 overflow-x-auto w-full py-4 scroll-smooth px-8 sm:px-12"
         style={{
           scrollBehavior: "smooth",
           scrollbarWidth: "none",
           msOverflowStyle: "none",
         }}
       >
-        {/* Hide scrollbar */}
         <style jsx>{`
           div::-webkit-scrollbar {
             display: none;
@@ -320,32 +378,47 @@ function CardSlider({
               newEpisode={showBadges ? card.newEpisode : false}
               top10={showBadges ? card.top10 : false}
               isContinueWatching={isContinueWatching || card.isContinueWatching}
+              position={
+                index === 0
+                  ? "left"
+                  : index === cards.length - 1
+                  ? "right"
+                  : "middle"
+              }
             />
           </div>
         ))}
       </div>
 
-      {showArrows && (
+      {showArrows && !isMobile && (
         <>
           <button
             onClick={prevCards}
             disabled={currentIndex === 0}
-            className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 bg-[#181A1C] bg-opacity-80 text-white p-1 sm:p-2 md:p-3 rounded-full z-50 hover:bg-opacity-100 transition ${
+            className={`absolute left-0 top-1/2 -translate-y-1/2 bg-[#181A1C] text-white p-3 rounded-full z-50 hover:bg-opacity-100 transition ${
               currentIndex === 0 ? "opacity-50 cursor-not-allowed" : ""
             }`}
+            style={{
+              left: "12px",
+              transform: "translateY(-50%) scale(1.2)",
+            }}
           >
-            <FaChevronLeft className="text-xs sm:text-sm md:text-base" />
+            <FaChevronLeft className="text-lg" />
           </button>
           <button
             onClick={nextCards}
             disabled={currentIndex >= cards.length - effectiveVisibleCards}
-            className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 bg-[#181A1C] bg-opacity-80 text-white p-1 sm:p-2 md:p-3 rounded-full z-50 hover:bg-opacity-100 transition ${
+            className={`absolute right-0 top-1/2 -translate-y-1/2 bg-[#181A1C] text-white p-3 rounded-full z-50 hover:bg-opacity-100 transition ${
               currentIndex >= cards.length - effectiveVisibleCards
                 ? "opacity-50 cursor-not-allowed"
                 : ""
             }`}
+            style={{
+              right: "12px",
+              transform: "translateY(-50%) scale(1.2)",
+            }}
           >
-            <FaChevronRight className="text-xs sm:text-sm md:text-base" />
+            <FaChevronRight className="text-lg" />
           </button>
         </>
       )}
@@ -374,36 +447,17 @@ Card.propTypes = {
   isContinueWatching: PropTypes.bool,
   progress: PropTypes.number,
   timeRemaining: PropTypes.string,
-  isSeries: PropTypes.bool,
+  position: PropTypes.oneOf(["left", "middle", "right"]),
 };
 
 CardSlider.propTypes = {
-  cards: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string,
-      image: PropTypes.string.isRequired,
-      alt: PropTypes.string.isRequired,
-      rating: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      imageWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      imageHeight: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      bgColor: PropTypes.string,
-      textColor: PropTypes.string,
-      newEpisode: PropTypes.bool,
-      top10: PropTypes.bool,
-      ageRating: PropTypes.string,
-      episodeCount: PropTypes.string,
-      duration: PropTypes.string,
-      progress: PropTypes.number,
-      timeRemaining: PropTypes.string,
-      isSeries: PropTypes.bool,
-      initialVisibleCards: PropTypes.number,
-    })
-  ).isRequired,
+  cards: PropTypes.arrayOf(PropTypes.shape(Card.propTypes)).isRequired,
   cardClassName: PropTypes.string,
   showArrows: PropTypes.bool,
   showBadges: PropTypes.bool,
   visibleCards: PropTypes.number,
   isContinueWatching: PropTypes.bool,
+  initialVisibleCards: PropTypes.number,
 };
 
 export { Card, CardSlider };

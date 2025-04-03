@@ -410,13 +410,13 @@ function Index() {
         mobileHeight="70px"
         desktopHeight="94px"
         profileComponent={<Profile {...profileData} />}
-        className="px-4 fixed top-0 left-0 right-0 z-50" // Tambahkan padding dan fixed positioning
+        className="px-4 fixed top-0 left-0 right-0 z-50"
       >
         <Nav
           items={navItems}
           textColor="text-white"
           gap="gap-6 md:gap-8"
-          mobileGap="gap-4"
+          mobileGap="gap-3"
           className="flex items-center"
         />
       </Header>
@@ -435,7 +435,8 @@ function Index() {
         ctaLink="#"
         ctaBgColor="bg-[#0F1E93]"
         ctaRounded="rounded-full"
-        containerHeight="h-[calc(100vh-70px)] md:h-[calc(100vh-94px)]"
+        // Ubah containerHeight untuk mobile landscape
+        containerHeight="min-h-[300px] md:h-[calc(100vh-94px)]"
         bgSize="cover"
         bgPosition="center"
         contentPosition="flex flex-col justify-center items-center text-center px-4 sm:px-8 md:px-16 lg:px-32"
@@ -454,7 +455,7 @@ function Index() {
           <CardSlider
             cards={cards}
             showBadges={true}
-            isContinueWatching={true}
+            isContinueWatching={true} // This forces 4 cards on desktop
             initialVisibleCards={4} // Show only 4 cards initially
             visibleCards={5} // Normal scroll will show 5 cards
           />

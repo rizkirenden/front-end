@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
-import { FaCog, FaArrowUp, FaSignOutAlt } from "react-icons/fa"; // Example import
+import { FaCog, FaArrowUp, FaSignOutAlt, FaChevronDown } from "react-icons/fa";
 
 function Profile({
   profileImage = "/src/assets/profile.png",
@@ -11,9 +11,17 @@ function Profile({
   const dropdownRef = useRef(null);
 
   const defaultItems = [
-    { label: "Profile", action: "#", icon: <FaCog /> },
-    { label: "Upgrade ke Premium", action: "#", icon: <FaArrowUp /> },
-    { label: "Keluar", action: "#", icon: <FaSignOutAlt /> },
+    { label: "Profile", action: "#", icon: <FaCog className="text-sm" /> },
+    {
+      label: "Upgrade ke Premium",
+      action: "#",
+      icon: <FaArrowUp className="text-sm" />,
+    },
+    {
+      label: "Keluar",
+      action: "#",
+      icon: <FaSignOutAlt className="text-sm" />,
+    },
   ];
 
   const items = dropdownItems.length > 0 ? dropdownItems : defaultItems;
@@ -30,33 +38,43 @@ function Profile({
   }, []);
 
   return (
-    <div className={`relative ${className}`} ref={dropdownRef}>
+    <div
+      className={`relative flex items-center ${className}`}
+      ref={dropdownRef}
+    >
+      {/* Profile image */}
+      <div className="w-8 h-8 md:w-10 md:h-10 rounded-full overflow-hidden border border-white">
+        <img
+          src={profileImage}
+          alt="profile"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* Dropdown arrow button - now on the right */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 focus:outline-none"
-        aria-label="Menu profil"
+        className="flex items-center justify-center focus:outline-none ml-2"
+        aria-label="Toggle profile menu"
       >
-        <div className="w-10 h-10 rounded-full overflow-hidden border-1 border-white">
-          <img
-            src={profileImage}
-            alt="profile"
-            className="w-full h-full object-cover"
-          />
-        </div>
+        <FaChevronDown
+          className={`text-white text-sm transition-transform duration-200 ${
+            isOpen ? "transform rotate-180" : ""
+          }`}
+        />
       </button>
 
+      {/* Dropdown menu */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 bg-[#181A1C] rounded-md shadow-lg py-1 z-50">
+        <div className="absolute right-0 top-full mt-2 w-48 md:w-56 bg-[#181A1C] rounded-md shadow-lg py-1 z-50">
           {items.map((item, index) => (
             <div key={index}>
-              {console.log(item.icon)}{" "}
-              {/* Check if icon is coming as expected */}
               {item.isDivider && (
                 <div className="border-t border-gray-200 my-1"></div>
               )}
               <a
                 href={item.action}
-                className={`block px-4 py-2 text-sm flex items-center gap-2 ${
+                className={`block px-3 py-2 text-xs md:text-sm flex items-center gap-2 ${
                   item.isDanger ? "text-red-600" : "text-white"
                 } hover:text-[#3254FF]`}
                 onClick={(e) => {
@@ -66,7 +84,9 @@ function Profile({
                   }
                 }}
               >
-                {item.icon && <span className="text-lg">{item.icon}</span>}
+                {item.icon && (
+                  <span className="text-xs md:text-sm">{item.icon}</span>
+                )}
                 {item.label}
               </a>
             </div>
@@ -78,19 +98,8 @@ function Profile({
 }
 
 Profile.propTypes = {
-  userName: PropTypes.string,
-  accountType: PropTypes.string,
   profileImage: PropTypes.string,
-  dropdownItems: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      action: PropTypes.string,
-      onClick: PropTypes.func,
-      icon: PropTypes.node,
-      isDivider: PropTypes.bool,
-      isDanger: PropTypes.bool,
-    })
-  ),
+  dropdownItems: PropTypes.array,
   className: PropTypes.string,
 };
 

@@ -1,11 +1,10 @@
-// Nav.js
 import PropTypes from "prop-types";
 
 function Nav({
   items,
   textColor = "text-white",
   gap = "gap-6",
-  mobileGap = "gap-3", // Mengurangi gap di mobile
+  mobileGap = "gap-3", // Diperkecil untuk mobile
   className = "",
 }) {
   return (
@@ -14,7 +13,7 @@ function Nav({
         <a
           key={index}
           href={item.link}
-          className={`${textColor} text-xs md:text-sm hover:opacity-80 transition-opacity`} // text-xs untuk mobile, md:text-sm untuk desktop
+          className={`${textColor} text-[10px] md:text-sm hover:opacity-80 transition-opacity px-1 md:px-0`} // Text lebih kecil di mobile
         >
           {item.label}
         </a>
@@ -33,6 +32,7 @@ Nav.propTypes = {
   textColor: PropTypes.string,
   gap: PropTypes.string,
   mobileGap: PropTypes.string,
+  className: PropTypes.string,
 };
 
 export { Nav };

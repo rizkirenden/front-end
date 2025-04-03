@@ -30,6 +30,9 @@ function HeroSection({
         backgroundSize: bgSize,
         backgroundPosition: bgPosition,
         backgroundRepeat: "no-repeat",
+        aspectRatio: "16/9",
+        height: "auto",
+        minHeight: "300px",
       }}
     >
       {overlay && (
@@ -39,43 +42,53 @@ function HeroSection({
         />
       )}
 
-      {/* Tambahkan padding-top di div container utama */}
-      <div className="relative z-10 flex flex-col justify-center items-start px-4 sm:px-6 h-full pt-24 md:pt-36">
-        {/* Content Section */}
-        <div className="text-left mb-8 w-full max-w-3xl">
-          <h1 className={`${titleSize} ${textColor} font-bold mb-4`}>
+      <div className="relative z-10 flex flex-col justify-center items-start px-4 sm:px-6 h-full pt-12 md:pt-36">
+        <div className="text-left mb-4 md:mb-8 w-full max-w-3xl">
+          <h1 className={`${titleSize} ${textColor} font-bold mb-2 md:mb-4`}>
             {title}
           </h1>
           {subtitle && (
-            <p className={`${subtitleSize} ${textColor} mb-8 w-full`}>
+            <p className={`${subtitleSize} ${textColor} mb-4 md:mb-8 w-full`}>
               {subtitle}
             </p>
           )}
         </div>
 
-        {/* Container for Buttons - tambahkan margin-top jika perlu */}
-        <div className="w-full flex items-center justify-between mt-4">
-          {/* Left-aligned buttons */}
-          <div className="flex items-center gap-4">
-            <Btn bgColor="bg-[#0F1E93]" rounded="rounded-full" href={ctaLink}>
+        {/* Container for Buttons - modifikasi untuk mobile */}
+        <div className="w-full flex flex-row items-center justify-between gap-2">
+          {/* Group tombol kiri */}
+          <div className="flex items-center gap-2">
+            <Btn
+              bgColor="bg-[#0F1E93]"
+              rounded="rounded-full"
+              href={ctaLink}
+              className="px-4 py-1 text-sm md:px-6 md:py-2 md:text-base"
+            >
               {ctaText}
             </Btn>
             <Btn
               bgColor="bg-[#181A1C]"
               rounded="rounded-full"
               href="#"
-              className="flex items-center"
+              className="flex items-center px-4 py-1 text-sm md:px-6 md:py-2 md:text-base"
             >
-              <FaInfoCircle className="mr-2" /> Selengkapnya
+              <FaInfoCircle className="mr-1 md:mr-2" />
+              <span className="hidden sm:inline">Selengkapnya</span>
+              <span className="sm:hidden">Selengkapnya</span>
             </Btn>
-            <div className="text-white bg-black bg-opacity-10 border-white border-2 px-2 py-2 rounded-full">
+            <div className="text-white bg-black bg-opacity-10 border-white border-2 px-2 py-1 rounded-full text-xs md:text-sm">
               18+
             </div>
           </div>
 
-          {/* Right-aligned mute button */}
-          <div className="ml-4 border-2 border-white rounded-full">
-            <Suara isMuted={isMuted} onToggle={onToggleMute} />
+          {/* Tombol mute di ujung kanan */}
+          <div className="border-2 border-white rounded-full p-1 md:p-2">
+            <Suara
+              isMuted={isMuted}
+              onToggle={onToggleMute}
+              size="sm" // kecil di mobile
+              className="md:size-md" // normal di desktop
+            />
           </div>
         </div>
       </div>

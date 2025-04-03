@@ -2,26 +2,35 @@ import PropTypes from "prop-types";
 
 function Header({
   logo,
-  logoMobile, // Tambahkan prop logoMobile
+  logoMobile,
   altText = "Logo",
   logoWidth = 100,
   logoHeight = 100,
-  mobileLogoWidth = 20, // Tambahkan prop untuk lebar logo mobile
-  mobileLogoHeight = 20, // Tambahkan prop untuk tinggi logo mobile
+  mobileLogoWidth = 24,
+  mobileLogoHeight = 24,
   bgColor = "#181A1C",
-  mobileHeight = "65px",
+  mobileHeight = "70px",
   desktopHeight = "94px",
   mobilePaddingX = "16px",
   desktopPaddingX = "40px",
   paddingY = "16px",
   children,
   profileComponent,
+  className = "",
 }) {
+  // Map color values to Tailwind classes
+  const bgColorClass =
+    {
+      "#181A1C": "bg-[#181A1C]",
+      "#ffffff": "bg-white",
+      "#000000": "bg-black",
+      // Add more color mappings as needed
+    }[bgColor] || "bg-[#181A1C]";
+
   return (
     <header
-      className={`bg-[${bgColor}] w-full h-[${mobileHeight}] md:h-[${desktopHeight}] px-[${mobilePaddingX}] md:px-[${desktopPaddingX}] py-[${paddingY}]`}
+      className={`${bgColorClass} w-full h-[${mobileHeight}] md:h-[${desktopHeight}] px-[${mobilePaddingX}] md:px-[${desktopPaddingX}] py-[${paddingY}] ${className}`}
       style={{
-        backgroundColor: bgColor,
         height: mobileHeight,
         paddingLeft: mobilePaddingX,
         paddingRight: mobilePaddingX,
@@ -30,31 +39,27 @@ function Header({
       }}
     >
       <div className="w-full flex items-center justify-between">
-        {/* Logo dan Nav di kiri */}
-        <div className="flex items-center gap-6 pl-12 md:gap-10">
+        <div className="flex items-center gap-4 md:gap-10 md:pl-12">
           <div className="flex-shrink-0">
-            {/* Logo untuk mobile */}
             <img
-              src={logoMobile || logo} // Fallback ke logo biasa jika logoMobile tidak ada
+              src={logoMobile || logo}
               alt={altText}
               width={mobileLogoWidth}
               height={mobileLogoHeight}
-              className="object-contain md:hidden" // Hanya tampil di mobile
+              className="object-contain md:hidden"
             />
-            {/* Logo untuk desktop */}
             <img
               src={logo}
               alt={altText}
               width={logoWidth}
               height={logoHeight}
-              className="object-contain hidden md:block" // Hanya tampil di desktop
+              className="object-contain hidden md:block"
             />
           </div>
           {children}
         </div>
 
-        {/* Profile di kanan */}
-        <div className="flex-shrink-0 pr-12">{profileComponent}</div>
+        <div className="flex-shrink-0 md:pr-12">{profileComponent}</div>
       </div>
     </header>
   );
