@@ -65,7 +65,7 @@ function Index() {
       />
 
       <section className="py-10 px-4 sm:px-8 md:px-16 lg:px-32 bg-[#181A1C]">
-        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-8">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-8 text-left">
           Melanjutkan Nonton Film
         </h2>
         <div className="w-full overflow-hidden">
@@ -80,7 +80,7 @@ function Index() {
       </section>
 
       <section className="py-6 sm:py-10 px-4 sm:px-8 md:px-16 lg:px-32 bg-[#181A1C]">
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-8">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-8 text-left">
           Top Rating Film dan Series Hari Ini
         </h2>
         <div className="w-full overflow-hidden">
@@ -94,7 +94,7 @@ function Index() {
       </section>
 
       <section className="py-6 sm:py-10 px-4 sm:px-8 md:px-16 lg:px-32 bg-[#181A1C]">
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-8">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-8 text-left">
           Film Trending
         </h2>
         <div className="w-full overflow-hidden">
@@ -108,7 +108,7 @@ function Index() {
       </section>
 
       <section className="py-6 sm:py-10 px-4 sm:px-8 md:px-16 lg:px-32 bg-[#181A1C]">
-        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-8">
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-8 text-left">
           Rilis Baru
         </h2>
         <div className="w-full overflow-hidden">

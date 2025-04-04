@@ -4,7 +4,7 @@ function Nav({
   items,
   textColor = "text-white",
   gap = "gap-6",
-  mobileGap = "gap-3", // Diperkecil untuk mobile
+  mobileGap = "gap-3",
   className = "",
 }) {
   return (
@@ -13,7 +13,7 @@ function Nav({
         <a
           key={index}
           href={item.link}
-          className={`${textColor} text-[10px] md:text-sm hover:opacity-80 transition-opacity px-1 md:px-0`} // Text lebih kecil di mobile
+          className={`${textColor} text-[10px] md:text-sm hover:opacity-80 transition-opacity px-1 md:px-0`}
         >
           {item.label}
         </a>

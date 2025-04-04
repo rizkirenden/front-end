@@ -8,7 +8,7 @@ export default function Btn({
   textColor = "text-white",
   rounded = "rounded-md",
   className = "",
-  size = "md", // 'sm' or 'md'
+  size = "md",
   ...props
 }) {
   const sizeClasses = {

@@ -42,7 +42,6 @@ function Profile({
       className={`relative flex items-center ${className}`}
       ref={dropdownRef}
     >
-      {/* Profile image */}
       <div className="w-8 h-8 md:w-10 md:h-10 rounded-full overflow-hidden border border-white">
         <img
           src={profileImage}
@@ -51,7 +50,6 @@ function Profile({
         />
       </div>
 
-      {/* Dropdown arrow button - now on the right */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center justify-center focus:outline-none ml-2"
@@ -64,7 +62,6 @@ function Profile({
         />
       </button>
 
-      {/* Dropdown menu */}
       {isOpen && (
         <div className="absolute right-0 top-full mt-2 w-48 md:w-56 bg-[#181A1C] rounded-md shadow-lg py-1 z-50">
           {items.map((item, index) => (

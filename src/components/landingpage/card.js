@@ -82,7 +82,7 @@ const Card = ({
 
     if (position === "left") return `0 ${offsetPercentage}% 20px 0`;
     if (position === "right") return `0 0 20px ${offsetPercentage}%`;
-    return `0 ${offsetPercentage / 2}% 20px ${offsetPercentage / 2}%`;
+    return `0px ${offsetPercentage}% 10px ${offsetPercentage / 50}%`;
   };
 
   const getHoverHeight = () => {
@@ -213,8 +213,7 @@ const Card = ({
               <span>{timeRemaining}</span>
             </div>
           )}
-
-          <div className="text-[10px] sm:text-xs text-[#C1C2C4] truncate font-bold flex justify-center items-center w-full text-center">
+          <div className="text-[4px] md:text-[12px] text-[#C1C2C4] truncate font-bold flex justify-center items-center w-full text-center">
             {genre}
           </div>
         </div>
@@ -356,10 +355,13 @@ const CardSlider = ({
   }, [cardWidth, isMobile]);
 
   return (
-    <div className="relative w-full overflow-visible" ref={containerRef}>
+    <div
+      className="relative w-full overflow-visible px-[20px]"
+      ref={containerRef}
+    >
       <div
         ref={sliderRef}
-        className="flex gap-3 sm:gap-4 overflow-x-auto w-full py-4 scroll-smooth px-8 sm:px-12"
+        className="flex gap-4 sm:gap-6 overflow-x-auto w-full py-4 scroll-smooth pl-0"
         style={{
           scrollBehavior: "smooth",
           scrollbarWidth: "none",
@@ -372,24 +374,36 @@ const CardSlider = ({
           }
         `}</style>
 
-        {cards.map((card, index) => (
-          <div key={index} className={`flex-shrink-0 ${cardClassName}`}>
-            <Card
-              {...card}
-              imageWidth={`${cardWidth}px`}
-              newEpisode={showBadges ? card.newEpisode : false}
-              top10={showBadges ? card.top10 : false}
-              isContinueWatching={isContinueWatching || card.isContinueWatching}
-              position={
-                index === 0
-                  ? "left"
-                  : index === cards.length - 1
-                  ? "right"
-                  : "middle"
-              }
-            />
-          </div>
-        ))}
+        {cards.map((card, index) => {
+          const isLastCard = index === cards.length - 1;
+          const isContinueCard = card.isContinueWatching || isContinueWatching;
+
+          return (
+            <div
+              key={index}
+              className={`flex-shrink-0 ${cardClassName}`}
+              style={{
+                marginRight: isContinueCard
+                  ? isLastCard
+                    ? "0"
+                    : "27px"
+                  : "6px",
+                transform: isContinueCard ? "translateX(-10px)" : "none",
+              }}
+            >
+              <Card
+                {...card}
+                imageWidth={`${cardWidth}px`}
+                newEpisode={showBadges ? card.newEpisode : false}
+                top10={showBadges ? card.top10 : false}
+                isContinueWatching={isContinueCard}
+                position={
+                  index === 0 ? "left" : isLastCard ? "right" : "middle"
+                }
+              />
+            </div>
+          );
+        })}
       </div>
 
       {showArrows && !isMobile && (
@@ -397,12 +411,19 @@ const CardSlider = ({
           <button
             onClick={prevCards}
             disabled={currentIndex === 0}
-            className={`absolute left-0 top-1/2 -translate-y-1/2 bg-[#181A1C] border-2 border-white text-white p-2 rounded-full z-50 transition ${
-              currentIndex === 0 ? "cursor-not-allowed" : ""
+            className={`absolute left-0 top-1/2 -translate-y-1/2 bg-[#181A1C] border-2 border-white text-white p-2 rounded-full z-[100] transition ${
+              currentIndex === 0
+                ? "cursor-not-allowed opacity-50"
+                : "hover:scale-110"
             }`}
             style={{
-              left: "12px",
-              transform: "translateY(-50%) scale(1)",
+              left: "0px", // Diubah dari -20px menjadi 10px
+              transform: "translateY(-50%)",
+              width: "40px",
+              height: "40px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
             <FaChevronLeft className="text-lg" />
@@ -410,14 +431,19 @@ const CardSlider = ({
           <button
             onClick={nextCards}
             disabled={currentIndex >= cards.length - effectiveVisibleCards}
-            className={`absolute right-0 top-1/2 -translate-y-1/2 bg-[#181A1C] border-2 border-white text-white p-2 rounded-full z-50 transition ${
+            className={`absolute right-0 top-1/2 -translate-y-1/2 bg-[#181A1C] border-2 border-white text-white p-2 rounded-full z-[100] transition ${
               currentIndex >= cards.length - effectiveVisibleCards
-                ? "cursor-not-allowed"
-                : ""
+                ? "cursor-not-allowed opacity-50"
+                : "hover:scale-110"
             }`}
             style={{
-              right: "12px",
-              transform: "translateY(-50%) scale(1)",
+              right: "0px", // Diubah dari -20px menjadi 10px
+              transform: "translateY(-50%)",
+              width: "40px",
+              height: "40px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
             <FaChevronRight className="text-lg" />

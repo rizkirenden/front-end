@@ -15,7 +15,6 @@ function Footer({ logo, altText, genres, helpLinks }) {
     <footer className="bg-[#181A1C] text-white py-8 px-4 sm:px-8 md:px-16 lg:px-32">
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-          {/* Left Section - Logo and Copyright */}
           <div className="mb-6 md:mb-0">
             <div className="flex flex-col items-start">
               {logo && <img src={logo} alt={altText} className="h-7 mb-5" />}
@@ -25,7 +24,6 @@ function Footer({ logo, altText, genres, helpLinks }) {
             </div>
           </div>
 
-          {/* Middle Section - Genre */}
           <div className="mb-6 md:mb-0">
             {/* Desktop View */}
             <h3 className="hidden md:block text-lg font-semibold mb-3">
@@ -43,7 +41,6 @@ function Footer({ logo, altText, genres, helpLinks }) {
               ))}
             </div>
 
-            {/* Mobile Dropdown */}
             <div className="md:hidden">
               <button
                 className="flex justify-between items-center w-full mb-3"
@@ -84,7 +81,6 @@ function Footer({ logo, altText, genres, helpLinks }) {
             </div>
           </div>
 
-          {/* Right Section - Help */}
           <div>
             {/* Desktop View */}
             <h3 className="hidden md:block text-lg font-semibold mb-3">
@@ -102,7 +98,6 @@ function Footer({ logo, altText, genres, helpLinks }) {
               ))}
             </div>
 
-            {/* Mobile Dropdown */}
             <div className="md:hidden">
               <button
                 className="flex justify-between items-center w-full mb-3"
