@@ -160,14 +160,14 @@ const Card = ({
             </div>
           </div>
         )}
-
         {title && (
           <div className="absolute bottom-0 left-0 right-0 w-full p-2 sm:p-3 bg-gradient-to-t from-black/80 to-transparent text-left">
             <div className="flex justify-between items-end">
               <h2 className={`font-bold text-xs sm:text-sm ${titleSize}`}>
                 {title}
               </h2>
-              {!isContinueWatching && (
+              {/* Tampilkan rating hanya untuk Continue Watching */}
+              {isContinueWatching && (
                 <div className="flex items-center">
                   <FaStar className="text-white mr-1 text-xs sm:text-sm" />
                   <span className="font-bold text-xs sm:text-sm">{rating}</span>
@@ -386,7 +386,7 @@ const CardSlider = ({
                 marginRight: isContinueCard
                   ? isLastCard
                     ? "0"
-                    : "27px"
+                    : "14px"
                   : "6px",
                 transform: isContinueCard ? "translateX(-10px)" : "none",
               }}
