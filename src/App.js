@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./landingpage/index";
 import LoginPage from "./login/index";
 import RegisterPage from "./register/index";
-
 function App() {
   return (
     <Router>

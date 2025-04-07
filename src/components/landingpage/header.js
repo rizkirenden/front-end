@@ -57,7 +57,9 @@ function Header({
           {children}
         </div>
 
-        <div className="flex-shrink-0 md:pr-12">{profileComponent}</div>
+        <div className="flex items-center gap-4">
+          <div className="flex-shrink-0 md:pr-12">{profileComponent}</div>
+        </div>
       </div>
     </header>
   );
